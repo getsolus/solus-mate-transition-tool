@@ -23,6 +23,7 @@ class App():
         self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
         self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
+        self.client = PackageKitGlib.Client()
         self.pkit_update()
 
     def finished(self):
@@ -63,14 +64,13 @@ class App():
     def pk_resolve_pkgs(self, pkgs, only_installed):
         """Resolve pkg name to package ids"""
         print("Pkit resolve")
-        client = PackageKitGlib.Client()
         pk_package_ids = []
 
         # FIXME: THE FIRST ELEMENT IN THE LIST CANNOT BE RESOLVED WHHYYY!?!
         for name in pkgs:
             print(name)
             try:
-                res = client.resolve(PackageKitGlib.FilterEnum.NONE, [name], None, self.on_pkit_progress, None)
+                res = self.client.resolve(PackageKitGlib.FilterEnum.NONE, (name,), None, self.on_pkit_progress, None)
                 package_ids = res.get_package_array()
                 name = package_ids[0].get_id()
                 is_installed = package_ids[0].get_info() & PackageKitGlib.InfoEnum.INSTALLED == 1
@@ -90,9 +90,8 @@ class App():
     def pkit_update(self):
         """Refresh packagekit repos"""
         print("Pkit update")
-        task = PackageKitGlib.Task()
         self.pkit_cancellable = Gio.Cancellable()
-        task.refresh_cache_async(True, self.pkit_cancellable, self.on_pkit_progress, (None, ), self.on_refresh_finished, (None, ))
+        self.client.refresh_cache_async(True, self.pkit_cancellable, self.on_pkit_progress, (None, ), self.on_refresh_finished, (None, ))
 
     def pkit_install_async(self, pkg_ids):
         """Install packages with resolved pkg ids asynchronously"""
@@ -102,7 +101,8 @@ class App():
         print(pkg_ids)
         if len(pkg_ids) > 0:
             print(pkg_ids)
-            task.install_packages_async(pkg_ids,
+            self.client.install_packages_async(False, # trusted only
+                            pkg_ids,
                             self.pkit_cancellable,  # cancellable
                             self.on_pkit_progress,
                             (None, ),  # progress data
@@ -117,7 +117,7 @@ class App():
         task = PackageKitGlib.Task()
         if len(pkg_ids) > 0:
             print(pkg_ids)
-            task.remove_packages_async(pkg_ids,
+            self.client.remove_packages_async(pkg_ids,
                             False,  # allow deps
                             True,  # autoremove
                             self.pkit_cancellable,  # cancellable
