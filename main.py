@@ -28,7 +28,7 @@ class App():
         exists, content = self.read_lockfile()
 
         # No lockfile exists so we wan't to be using the MATE session
-        if exists == False and self.get_desktop_type() != "MATE":
+        if exists == False and self.get_desktop_type() != "mate":
             self.builder.get_object("install_budgie").set_sensitive(False)
             self.builder.get_object("install_budgie").set_tooltip_text("")
             self.builder.get_object("install_xfce").set_sensitive(False)
