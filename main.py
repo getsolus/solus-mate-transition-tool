@@ -8,6 +8,8 @@ from gi.repository import GLib, PackageKitGlib, Gio, Gtk
 import os
 import sys
 
+LOCKFILE="/var/tmp/solus-mate-transition-de"
+
 class App():
     def __init__(self):
         self.builder = Gtk.Builder()
@@ -220,18 +222,16 @@ class App():
         return self.pk_resolve_pkgs(pkgs, True)
 
     def read_lockfile(self):
-        loc = '/var/tmp/solus-mate-transition-de'
         exists = False
         contents = ""
-        if os.path.exists(loc):
+        if os.path.exists(LOCKFILE):
             exists = True
-            with open(loc, "r") as reader:
+            with open(LOCKFILE, "r") as reader:
                 contents = reader.readlines()
         return exists, contents
 
     def write_lockfile(self, de):
-        loc = '/var/tmp/solus-mate-transition-de'
-        with open(loc, 'w') as writer:
+        with open(LOCKFILE, 'w') as writer:
             writer.write(de)
             print("wrote lock file")
 
