@@ -26,6 +26,16 @@ class App():
         self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
         exists, content = self.read_lockfile()
+
+        # No lockfile exists so we wan't to be using the MATE session
+        if exists == False and self.get_desktop_type() != "MATE":
+            self.builder.get_object("install_budgie").set_sensitive(False)
+            self.builder.get_object("install_budgie").set_tooltip_text("")
+            self.builder.get_object("install_xfce").set_sensitive(False)
+            self.builder.get_object("install_xfce").set_tooltip_text("")
+            self.on_error_dialog("Error", "Logout and login to the MATE session first to continue")
+
+        # Lockfile exists so ensure the current DE session matches the lockfile
         if exists == True and content is not None:
             # FIXME: Maybe resolve packages again here to confirm all is installed
             self.builder.get_object("install_budgie").set_sensitive(False)
@@ -192,10 +202,6 @@ class App():
         btn = self.builder.get_object("install_budgie")
         btn.set_sensitive(False)
 
-        if self.get_desktop_type() != "MATE":
-            self.progress.set_text("Error: Not using MATE desktop environment")
-            #return
-
         pkgs = self.resolve_budgie_pkgs()
         print(pkgs)
 
@@ -212,10 +218,6 @@ class App():
         self.builder.get_object("install_budgie").set_sensitive(False)
         btn.set_sensitive(False)
 
-        if self.get_desktop_type() != "MATE":
-            self.progress.set_text("Error: Not using MATE desktop environment")
-            #return
-
         pkgs = self.resolve_xfce_pkgs()
         print(pkgs)
 
@@ -228,8 +230,6 @@ class App():
         self.write_lockfile("XFCE")
 
     def remove_mate(self, button):
-        # Read file in /var
-        # Check XDG_DESKTOP_TYPE == desktop choice
         pkgs = self.resolve_mate_pkgs()
         print(pkgs)
         if len(pkgs) == 0:
