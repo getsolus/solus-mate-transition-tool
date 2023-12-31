@@ -5,10 +5,14 @@ gi.require_version('PackageKitGlib', '1.0')
 gi.require_version("Gtk", "3.0")
 
 from gi.repository import GLib, PackageKitGlib, Gio, Gtk
+from configparser import ConfigParser
 import os
 import sys
 
 LOCKFILE="/var/tmp/solus-mate-transition-de"
+
+LIGHTDM_CONF_DIR = "/etc/lightdm/lightdm.conf.d/"
+LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
 
 class App():
     def __init__(self):
@@ -284,6 +288,38 @@ class App():
         with open(LOCKFILE, 'w') as writer:
             writer.write(de)
             print("wrote lock file")
+
+    def remove_lockfile(self) -> None:
+        if os.path.exists(LOCKFILE):
+            os.remove(LOCKFILE)
+            print("Removed {}".format(LOCKFILE))
+
+    # FIXME: polkit shit
+    def write_lightdm_autologin_conf(self, session: str) -> None:
+        if os.path.exists("/etc/lightdm/lightdm.conf"):
+            print("Warning: user-set /etc/lightdm/lightdm.conf exists, our temporary override may not function")
+
+        if session != "mate" or session != "xfce":
+            print("Warning: untested session type {}".format(session))
+
+        conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
+
+        os.makedirs(os.path.dirname(LIGHTDM_CONF_DIR), exist_ok=True)
+        config = ConfigParser()
+        config.read(conf_path)
+        config.add_section("Seat:*")
+        config.set('Seat:*', 'autologin-session', session)
+        config.set('Seat:*', "autologin-user", os.getlogin())
+
+        with open(conf_path, 'w') as f:
+            config.write(f)
+
+    # FIXME: polkit shit
+    def remove_lightdm_conf(self) -> None:
+        conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
+        if os.path.exists(conf_path):
+            os.remove(conf_path)
+            print("Removed lightdm override: {}".format(path))
 
 App()
 Gtk.main()
