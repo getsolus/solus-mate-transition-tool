@@ -203,22 +203,35 @@ class App():
         else:
             self.pkit_remove_async(pkgs)
 
+    def read_pkgs_file(self, de) -> list:
+        path = "{}-pkgs.txt".format(de)
+        contents = []
+
+        # FIXME: Handle reading from installed location e.g. /usr
+        try:
+            with open(path, "r") as reader:
+                contents = reader.read().splitlines()
+            print(contents)
+        except Exception as e:
+            self.progress.set_text("Error: {}".format(error))
+            print("Error Failed to read {}, error:", path, e.message)
+
+        if len(contents) == 0:
+            self.progress.set_text("Error: no packages found in {}".format(path))
+            print("Error: No packages found in {}", path)
+
+        return contents
+
     def resolve_budgie_pkgs(self):
-        # FIXME: Read this in from a file?
-        # FIXME: this isn't an exhaustive list
-        pkgs = ["budgie-desktop", "budgie-control-center"]
+        pkgs = self.read_pkgs_file("budgie")
         return self.pk_resolve_pkgs(pkgs, False)
 
     def resolve_xfce_pkgs(self):
-        # FIXME: Read this in from a file?
-        # FIXME: this isn't an exhaustive list
-        pkgs = ["parole", "thunar", "mousepad"]
+        pkgs = self.read_pkgs_file("xfce")
         return self.pk_resolve_pkgs(pkgs, False)
 
     def resolve_mate_pkgs(self):
-        # FIXME: Read this in from a file?
-        # FIXME: this isn't an exhaustive list
-        pkgs = ["caja", "atril"]
+        pkgs = self.read_pkgs_file("mate")
         return self.pk_resolve_pkgs(pkgs, True)
 
     def read_lockfile(self):
