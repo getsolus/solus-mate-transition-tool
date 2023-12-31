@@ -2,11 +2,13 @@
 
 import gi
 gi.require_version('PackageKitGlib', '1.0')
+gi.require_version('Gdk', '3.0')
 gi.require_version("Gtk", "3.0")
 
-from gi.repository import GLib, PackageKitGlib, Gio, Gtk
+from gi.repository import Gdk, Gio, GLib, Gtk, PackageKitGlib
 from configparser import ConfigParser
 import os
+import subprocess
 import sys
 
 LOCKFILE="/var/tmp/solus-mate-transition-de"
@@ -62,12 +64,16 @@ class App():
         dialog = Gtk.MessageDialog(
             flags=0,
             message_type=Gtk.MessageType.QUESTION,
-            buttons=Gtk.ButtonsType.OK_CANCEL,
+            buttons=Gtk.ButtonsType.OK,
             text=f"Successfully Installed {de}",
         )
+        reboot_btn = dialog.add_button("Reboot", Gtk.ResponseType.ACCEPT)
+        # TODO: Set reboot color to a nice red
+        #reboot_btn.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("red"))
+        # set image to object-rotate-right
         dialog.format_secondary_text(
-            "Reboot now to login to your new desktop environment. \n\n"
-            "After logging in this program will auto-start to prompt you to remove MATE."
+            "Reboot now to login to your new desktop environment automatically. \n\n"
+            "This program will then auto-start to prompt you to remove MATE."
         )
 
         deimg = Gtk.Image()
@@ -76,8 +82,10 @@ class App():
         dialog.set_image(deimg)
 
         dialog.show_all()
-        dialog.run()
-        # FIXME: Reboot on OK
+        res = dialog.run()
+        if res == Gtk.ResponseType.ACCEPT:
+            # FIXME: some sort of nice desktop api to use here?
+            subprocess.run(["systemctl", "reboot"])
         dialog.destroy()
 
     def on_error_dialog(self, title: str, message: str) -> None:
