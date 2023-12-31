@@ -134,6 +134,19 @@ class App():
             self.progress.set_text("Error: {}".format(error))
             print("Pkit update error:", e.message)
 
+        # FIXME: callback data/ref. Clean this shit up
+        if data == "xfce":
+            self.write_lockfile("XFCE")
+            self.write_lightdm_autologin_conf("xfce")
+            self.on_success_reboot_dialog(de="XFCE", logo="xfce4-logo")
+        if data == "budgie":
+            self.write_lockfile("Budgie")
+            self.write_lightdm_autologin_conf("budgie")
+            self.on_success_reboot_dialog(de="Budgie", logo="budgie-start-here-symbolic")
+        if data == "mate":
+            self.remove_lockfile()
+            self.remove_lightdm_conf()
+
     def pk_resolve_pkgs(self, pkgs, only_installed):
         """Resolve pkg name to package ids"""
         print("Pkit resolve")
@@ -168,7 +181,7 @@ class App():
         self.pkit_cancellable = Gio.Cancellable()
         self.client.refresh_cache_async(True, self.pkit_cancellable, self.on_pkit_progress, (None, ), self.on_refresh_finished, (None, ))
 
-    def pkit_install_async(self, pkg_ids):
+    def pkit_install_async(self, pkg_ids: list, ref: str) -> None:
         """Install packages with resolved pkg ids asynchronously"""
         print("Pkit install")
         self.pkit_cancellable = Gio.Cancellable()
@@ -182,10 +195,10 @@ class App():
                             self.on_pkit_progress,
                             (None, ),  # progress data
                             self.on_pkit_finished,  # callback ready
-                            None  # callback data
+                            ref  # callback data
                             )
 
-    def pkit_remove_async(self, pkg_ids):
+    def pkit_remove_async(self, pkg_ids: list, ref: str) -> None:
         """Remove packages with resolved pkg ids asynchronously"""
         print("Pkit remove")
         self.pkit_cancellable = Gio.Cancellable()
@@ -199,7 +212,7 @@ class App():
                             self.on_pkit_progress,
                             (None, ),  # progress data
                             self.on_pkit_finished,  # callback ready
-                            None  # callback data
+                            ref  # callback data
                             )
 
     def pkit_cancel(self, button):
@@ -223,10 +236,7 @@ class App():
         if len(pkgs) == 0:
             self.progress.set_text("Error: resolved packages already installed")
         else:
-            self.pkit_install_async(pkgs)
-        # FIXME: How to wait for async packagekit result here
-
-        self.write_lockfile("Budgie")
+            self.pkit_install_async(pkgs, ref="budgie")
 
     def install_xfce(self, button):
         btn = self.builder.get_object("install_xfce")
@@ -239,10 +249,7 @@ class App():
         if len(pkgs) == 0:
             self.progress.set_text("Error: resolved packages already installed")
         else:
-            self.pkit_install_async(pkgs)
-        # FIXME: How to wait for async packagekit result here
-
-        self.write_lockfile("XFCE")
+            self.pkit_install_async(pkgs, ref="xfce")
 
     def remove_mate(self, button):
         pkgs = self.resolve_mate_pkgs()
@@ -250,7 +257,7 @@ class App():
         if len(pkgs) == 0:
             self.progress.set_text("Error: resolved packages already removed")
         else:
-            self.pkit_remove_async(pkgs)
+            self.pkit_remove_async(pkgs, ref="mate")
 
     def read_pkgs_file(self, de) -> list:
         path = "{}-pkgs.txt".format(de)
