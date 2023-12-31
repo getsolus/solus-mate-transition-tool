@@ -147,7 +147,7 @@ class App():
             self.remove_lockfile()
             self.remove_lightdm_conf()
 
-    def pk_resolve_pkgs(self, pkgs, only_installed):
+    def pk_resolve_pkgs(self, pkgs: list, only_installed: bool) -> list:
         """Resolve pkg name to package ids"""
         print("Pkit resolve")
         pk_package_ids = []
@@ -215,18 +215,18 @@ class App():
                             ref  # callback data
                             )
 
-    def pkit_cancel(self, button):
+    def pkit_cancel(self, button) -> None:
         """Cancel packagekit operation if supported"""
         print("Pkit cancel")
         if self.pkit_cancellable != None:
             self.pkit_cancellable.cancel()
 
-    def get_desktop_type(self):
+    def get_desktop_type(self) -> str:
         desktop = os.environ['XDG_SESSION_DESKTOP']
         print(desktop)
         return desktop
 
-    def install_budgie(self, button):
+    def install_budgie(self, button) -> None:
         btn = self.builder.get_object("install_budgie")
         btn.set_sensitive(False)
 
@@ -238,7 +238,7 @@ class App():
         else:
             self.pkit_install_async(pkgs, ref="budgie")
 
-    def install_xfce(self, button):
+    def install_xfce(self, button) -> None:
         btn = self.builder.get_object("install_xfce")
         self.builder.get_object("install_budgie").set_sensitive(False)
         btn.set_sensitive(False)
@@ -251,7 +251,7 @@ class App():
         else:
             self.pkit_install_async(pkgs, ref="xfce")
 
-    def remove_mate(self, button):
+    def remove_mate(self, button) -> None:
         pkgs = self.resolve_mate_pkgs()
         print(pkgs)
         if len(pkgs) == 0:
@@ -259,7 +259,7 @@ class App():
         else:
             self.pkit_remove_async(pkgs, ref="mate")
 
-    def read_pkgs_file(self, de) -> list:
+    def read_pkgs_file(self, de: str) -> list:
         path = "{}-pkgs.txt".format(de)
         contents = []
 
@@ -278,19 +278,19 @@ class App():
 
         return contents
 
-    def resolve_budgie_pkgs(self):
+    def resolve_budgie_pkgs(self) -> list:
         pkgs = self.read_pkgs_file("budgie")
         return self.pk_resolve_pkgs(pkgs, False)
 
-    def resolve_xfce_pkgs(self):
+    def resolve_xfce_pkgs(self) -> list:
         pkgs = self.read_pkgs_file("xfce")
         return self.pk_resolve_pkgs(pkgs, False)
 
-    def resolve_mate_pkgs(self):
+    def resolve_mate_pkgs(self) -> list:
         pkgs = self.read_pkgs_file("mate")
         return self.pk_resolve_pkgs(pkgs, True)
 
-    def read_lockfile(self):
+    def read_lockfile(self) -> tuple[bool, str]:
         exists = False
         contents = ""
         if os.path.exists(LOCKFILE):
@@ -299,7 +299,7 @@ class App():
                 contents = reader.read()
         return exists, contents
 
-    def write_lockfile(self, de):
+    def write_lockfile(self, de: str) -> None:
         with open(LOCKFILE, 'w') as writer:
             writer.write(de)
             print("wrote lock file")
