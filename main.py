@@ -127,6 +127,9 @@ class App():
         print("Pkit resolve")
         pk_package_ids = []
 
+        # FIXME: Resolve all the packages in one call with a formatted string instead of looping
+        #        Then filter out installed/not_installed. Will be quicker.
+        # FIXME: Use resolve_async if possible.
         for name in pkgs:
             print(name)
             try:
