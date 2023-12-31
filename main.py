@@ -30,6 +30,39 @@ class App():
         #        pkg will fail to resolve
         #self.pkit_update()
 
+    def on_success_reboot_dialog(self, de: str, logo: str) -> None:
+        dialog = Gtk.MessageDialog(
+            flags=0,
+            message_type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.OK_CANCEL,
+            text=f"Successfully Installed {de}",
+        )
+        dialog.format_secondary_text(
+            "Reboot now to login to your new desktop environment. \n\n"
+            "After logging in this program will auto-start to prompt you to remove MATE."
+        )
+
+        deimg = Gtk.Image()
+        deimg.set_from_icon_name(logo, size = Gtk.IconSize.MENU)
+        # FIXME. MessageDialog.set_image is deprecated
+        dialog.set_image(deimg)
+
+        dialog.show_all()
+        dialog.run()
+        # FIXME: Reboot on OK
+        dialog.destroy()
+
+    def on_error_dialog(self, title: str, message: str) -> None:
+        dialog = Gtk.MessageDialog(
+            flags=0,
+            message_type=Gtk.MessageType.ERROR,
+            buttons=Gtk.ButtonsType.CANCEL,
+            text=title,
+        )
+        dialog.format_secondary_text(message)
+        dialog.run()
+        dialog.destroy()
+
     def finished(self):
         self.progress.set_fraction(100.0)
         self.progress.set_text("Finished")
