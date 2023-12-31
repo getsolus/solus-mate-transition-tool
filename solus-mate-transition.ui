@@ -232,6 +232,7 @@ environment and install Budgie or XFCE in it's place.</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
+                    <property name="tooltip-text" translatable="yes">Choose the XFCE desktop environment to replace MATE.</property>
                     <property name="image">image_xfce</property>
                     <property name="always-show-image">True</property>
                   </object>
@@ -250,6 +251,7 @@ environment and install Budgie or XFCE in it's place.</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
+                    <property name="tooltip-text" translatable="yes">Choose the Budgie desktop environment to replace MATE.</property>
                     <property name="image">image_budgie</property>
                     <property name="always-show-image">True</property>
                   </object>

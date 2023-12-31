@@ -25,6 +25,20 @@ class App():
         self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
         self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
+        exists, content = self.read_lockfile()
+        if exists == True and content is not None:
+            # FIXME: Maybe resolve packages again here to confirm all is installed
+            self.builder.get_object("install_budgie").set_sensitive(False)
+            self.builder.get_object("install_budgie").set_tooltip_text("")
+            self.builder.get_object("install_xfce").set_sensitive(False)
+            self.builder.get_object("install_xfce").set_tooltip_text("")
+            if self.get_desktop_type() == content:
+                self.builder.get_object("remove_mate").set_sensitive(True)
+                self.builder.get_object("remove_mate").set_tooltip_text("Uninstall MATE to complete transition")
+            else:
+                self.on_error_dialog("Error",
+                                     f"{content} is installed but you are not logged into that desktop environment.\nLogout and login to the {content} session to continue.")
+
         self.client = PackageKitGlib.Client()
         # FIXME: If you refresh repos then immediately try to resolve pkgs the first
         #        pkg will fail to resolve
@@ -175,12 +189,6 @@ class App():
         return desktop
 
     def install_budgie(self, button):
-
-        exists, content = self.read_lockfile()
-        if exists == True:
-           self.progress.set_text("Error: {} already installed".format(content))
-           return
-
         btn = self.builder.get_object("install_budgie")
         btn.set_sensitive(False)
 
@@ -197,16 +205,9 @@ class App():
             self.pkit_install_async(pkgs)
         # FIXME: How to wait for async packagekit result here
 
-        self.write_lockfile("budgie")
+        self.write_lockfile("Budgie")
 
     def install_xfce(self, button):
-
-        exists, content = self.read_lockfile()
-        print(exists, content)
-        if exists == True:
-           self.progress.set_text("Error: {} already installed".format(content))
-           return
-
         btn = self.builder.get_object("install_xfce")
         self.builder.get_object("install_budgie").set_sensitive(False)
         btn.set_sensitive(False)
@@ -224,7 +225,7 @@ class App():
             self.pkit_install_async(pkgs)
         # FIXME: How to wait for async packagekit result here
 
-        self.write_lockfile("xfce")
+        self.write_lockfile("XFCE")
 
     def remove_mate(self, button):
         # Read file in /var
@@ -273,7 +274,7 @@ class App():
         if os.path.exists(LOCKFILE):
             exists = True
             with open(LOCKFILE, "r") as reader:
-                contents = reader.readlines()
+                contents = reader.read()
         return exists, contents
 
     def write_lockfile(self, de):
