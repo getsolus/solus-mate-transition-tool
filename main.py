@@ -24,7 +24,9 @@ class App():
         self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
         self.client = PackageKitGlib.Client()
-        self.pkit_update()
+        # FIXME: If you refresh repos then immediately try to resolve pkgs the first
+        #        pkg will fail to resolve
+        #self.pkit_update()
 
     def finished(self):
         self.progress.set_fraction(100.0)
@@ -66,7 +68,6 @@ class App():
         print("Pkit resolve")
         pk_package_ids = []
 
-        # FIXME: THE FIRST ELEMENT IN THE LIST CANNOT BE RESOLVED WHHYYY!?!
         for name in pkgs:
             print(name)
             try:
@@ -209,13 +210,13 @@ class App():
     def resolve_xfce_pkgs(self):
         # FIXME: Read this in from a file?
         # FIXME: this isn't an exhaustive list
-        pkgs = ["a", "parole", "thunar", "mousepad"]
+        pkgs = ["parole", "thunar", "mousepad"]
         return self.pk_resolve_pkgs(pkgs, False)
 
     def resolve_mate_pkgs(self):
         # FIXME: Read this in from a file?
         # FIXME: this isn't an exhaustive list
-        pkgs = ["a", "caja", "atril"]
+        pkgs = ["caja", "atril"]
         return self.pk_resolve_pkgs(pkgs, True)
 
     def read_lockfile(self):
