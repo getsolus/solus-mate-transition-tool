@@ -157,6 +157,52 @@ class App():
             self.remove_lightdm_conf()
             self.remove_desktop_autostart_conf()
 
+    def pk_resolve_pkgs_async(self, pkgs: list, only_installed: bool, ref: str) -> None:
+        print("Pkit resolve async")
+
+        def on_resolve_async(source, result, data=None) -> bool:
+            results = source.generic_finish(result)
+            package_ids = results.get_package_array()
+
+            print("DATA", data)
+
+            if len(package_ids) == 0:
+                return False
+
+            pkgs = []
+            for i in package_ids:
+                name = i.get_id()
+                is_installed = i.get_info() & PackageKitGlib.InfoEnum.INSTALLED == 1
+                print("is_installed", is_installed, name)
+                # FIXME: make this not shit
+                if data == "mate" and is_installed == False:
+                    print("Skipping {}".format(name))
+                elif data == "xfce" and is_installed == True:
+                    print("Skipping {}".format(name))
+                elif data == "budgie" and is_installed == True:
+                    print("Skipping {}".format(name))
+                else:
+                    pkgs.append(name)
+
+            # FIXME: Make this not shit
+            if data == "xfce":
+                self.pkit_install_async(pkgs, ref=data)
+            if data == "budgie":
+                self.pkit_install_async(pkgs, ref=data)
+            if data == "mate":
+                self.pkit_remove_async(pkgs, ref=data)
+            return True
+
+        self.client.resolve_async(False, # trusted only
+                                    pkgs,
+                                    self.pkit_cancellable,  # cancellable
+                                    self.on_pkit_progress,
+                                    (None, ),  # progress data
+                                    on_resolve_async,  # callback ready
+                                    ref  # callback data
+                                    )
+
+
     def pk_resolve_pkgs(self, pkgs: list, only_installed: bool) -> list:
         """Resolve pkg name to package ids"""
         print("Pkit resolve")
