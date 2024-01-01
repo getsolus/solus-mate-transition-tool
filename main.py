@@ -208,9 +208,8 @@ class App():
         task = PackageKitGlib.Task()
         if len(pkg_ids) > 0:
             print(pkg_ids)
-            self.client.remove_packages_async(pkg_ids,
-                            False,  # allow deps
-                            True,  # autoremove
+            self.client.install_packages_async(False, # trusted only
+                            pkg_ids,
                             self.pkit_cancellable,  # cancellable
                             self.on_pkit_progress,
                             (None, ),  # progress data
