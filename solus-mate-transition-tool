@@ -338,6 +338,20 @@ class App():
             os.remove(conf_path)
             print("Removed lightdm override: {}".format(path))
 
+    # FIXME: polkit shit
+    def write_desktop_autostart_conf() -> None:
+        desktop_path = "/etc/xdg/autostart/us.getsol.matetransition.desktop"
+        os.makedirs(os.path.dirname("/etc/xdg/autostart/"), exist_ok=True)
+        config = ConfigParser()
+        config.optionxform = str
+        config.read(desktop_path)
+        config.add_section("Desktop Entry")
+        config.set("Desktop Entry", "Type", "Application")
+        config.set("Desktop Entry", "Name", "Solus MATE Transition Tool")
+        config.set("Desktop Entry", "Exec", "solus-mate-transition-tool")
+        with open(desktop_path, 'w') as f:
+            config.write(f, space_around_delimiters=False)
+
 App()
 Gtk.main()
 
