@@ -203,35 +203,6 @@ class App():
                                     ref  # callback data
                                     )
 
-
-    def pk_resolve_pkgs(self, pkgs: list, only_installed: bool) -> list:
-        """Resolve pkg name to package ids"""
-        print("Pkit resolve")
-        pk_package_ids = []
-
-        # FIXME: Resolve all the packages in one call with a formatted string instead of looping
-        #        Then filter out installed/not_installed. Will be quicker.
-        # FIXME: Use resolve_async if possible.
-        for name in pkgs:
-            print(name)
-            try:
-                res = self.client.resolve(PackageKitGlib.FilterEnum.NONE, (name,), None, self.on_pkit_progress, None)
-                package_ids = res.get_package_array()
-                name = package_ids[0].get_id()
-                is_installed = package_ids[0].get_info() & PackageKitGlib.InfoEnum.INSTALLED == 1
-                if only_installed == False and is_installed == True:
-                    print("Skipping {}".format(name))
-                elif only_installed == True and is_installed == False:
-                    print("Skipping {}".format(name))
-                else:
-                    pk_package_ids.append(name)
-
-            except Exception as e:
-                error = e.message
-                self.progress.set_text("Error: {}".format(error))
-                print("Pkit update error:", e.message)
-        return pk_package_ids
-
     def pkit_update(self):
         """Refresh packagekit repos"""
         print("Pkit update")
