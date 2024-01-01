@@ -352,6 +352,13 @@ class App():
         with open(desktop_path, 'w') as f:
             config.write(f, space_around_delimiters=False)
 
+    # FIXME: polkit shit
+    def remove_desktop_autostart_conf(self) -> None:
+        desktop_path = "/etc/xdg/autostart/us.getsol.matetransition.desktop"
+        if os.path.exists(desktop_path):
+            os.remove(desktop_path)
+            print("Removed autostart entry: {}".format(path))
+
 App()
 Gtk.main()
 
