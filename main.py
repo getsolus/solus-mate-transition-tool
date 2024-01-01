@@ -51,7 +51,7 @@ class App():
             self.builder.get_object("install_budgie").set_tooltip_text("")
             self.builder.get_object("install_xfce").set_sensitive(False)
             self.builder.get_object("install_xfce").set_tooltip_text("")
-            if self.get_desktop_type() == content:
+            if self.get_desktop_type().casefold() == content.casefold():
                 self.builder.get_object("remove_mate").set_sensitive(True)
                 self.builder.get_object("remove_mate").set_tooltip_text("Uninstall MATE to complete transition")
             else:
