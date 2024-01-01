@@ -9,6 +9,7 @@ gi.require_version('Gdk', '3.0')
 gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gdk, Gio, GLib, Gtk, PackageKitGlib
+import dbus
 
 LOCKFILE="/var/tmp/solus-mate-transition-de"
 
@@ -32,6 +33,10 @@ class App():
         self.window.show()
 
         self.pkit_cancellable = None
+        is_auth = self.check_polkit_auth()
+        if is_auth is False:
+            self.on_error_dialog(title="Unauthorized",
+                                 message="Authorization is needed to run this program")
 
         self.builder.get_object("install_budgie").connect("clicked", self.install_budgie)
         self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
@@ -375,6 +380,22 @@ class App():
         if os.path.exists(desktop_path):
             os.remove(desktop_path)
             print(f"Removed autostart entry: {desktop_path}")
+
+    def check_polkit_auth(self) -> bool:
+        bus = dbus.SystemBus()
+        proxy = bus.get_object('org.freedesktop.PolicyKit1', '/org/freedesktop/PolicyKit1/Authority')
+        authority = dbus.Interface(proxy, dbus_interface='org.freedesktop.PolicyKit1.Authority')
+        system_bus_name = bus.get_unique_name()
+
+        subject = ('system-bus-name', {'name' : system_bus_name})
+        action_id = "us.getsol.matetransition.run"
+        details = {}
+        flags = 1            # AllowUserInteraction flag
+        cancellation_id = '' # No cancellation id
+
+        (pk_granted, pk_other, pk_details) = authority.CheckAuthorization(subject, action_id, details, flags, cancellation_id)
+        print(pk_granted, pk_other, pk_details)
+        return bool(pk_granted)
 
 App()
 Gtk.main()
