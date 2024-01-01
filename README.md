@@ -9,13 +9,16 @@ It uses packagekit under the hood and is extremely work in progress.
 - [x] Create exhaustive list of Budgie pkgs to install (e.g. -c desktop.budgie and budgie-desktop-branding)
 - [x] Create exhaustive list of MATE pkgs to remove (e.g. -c desktop.mate and mate-desktop-branding)
 - [x] Optional: read in pkg lists from a file
-- [ ] Policykit integration (exec with pkexec or dbus obtainauth from freedesktop.policykit)
+- [ ] Policykit integration (register on dbus and Policykit prompt, pkexec is not an option due to it dropping XDG_SESSION_DESKTOP)
 - [x] Override the default user-session to the chosen DE after install in lightdm seat until MATE is removed
-- [ ] Async packagekit resolve
+- [x] Async packagekit resolve
 - [ ] More robust locking file
 - [ ] Handle window closures
 - [ ] Fix an annoying bug where the first element in the list isn't resolved by packagekit
 - [x] Wait for packagekit async tasks (wrap around asyncio?)
 - [x] Prompt reboot after installing
+- [ ] Notification prompt for existing MATE installs (take inspo from solus-update-checker)
+- [x] Temporary autostart & autologin after new DE install
 - [ ] Packaging: setup meson
-- [ ] Packaging: Autostart for supported DE's (e.g. /usr/share/xdg/autostart/)
+- [ ] Code cleanup: try and stop abusing callback data with hardcoded if statements
+- [ ] Code cleanup: more robust error checking
