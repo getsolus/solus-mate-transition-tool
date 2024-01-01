@@ -141,14 +141,17 @@ class App():
         if data == "xfce":
             self.write_lockfile("XFCE")
             self.write_lightdm_autologin_conf("xfce")
+            self.write_desktop_autostart_conf()
             self.on_success_reboot_dialog(de="XFCE", logo="xfce4-logo")
         if data == "budgie":
             self.write_lockfile("Budgie")
             self.write_lightdm_autologin_conf("budgie")
+            self.write_desktop_autostart_conf()
             self.on_success_reboot_dialog(de="Budgie", logo="budgie-start-here-symbolic")
         if data == "mate":
             self.remove_lockfile()
             self.remove_lightdm_conf()
+            self.remove_desktop_autostart_conf()
 
     def pk_resolve_pkgs(self, pkgs: list, only_installed: bool) -> list:
         """Resolve pkg name to package ids"""
@@ -339,7 +342,7 @@ class App():
             print("Removed lightdm override: {}".format(path))
 
     # FIXME: polkit shit
-    def write_desktop_autostart_conf() -> None:
+    def write_desktop_autostart_conf(self) -> None:
         desktop_path = "/etc/xdg/autostart/us.getsol.matetransition.desktop"
         os.makedirs(os.path.dirname("/etc/xdg/autostart/"), exist_ok=True)
         config = ConfigParser()
