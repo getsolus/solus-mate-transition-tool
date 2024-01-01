@@ -57,7 +57,8 @@ class App():
             self.builder.get_object("install_xfce").set_tooltip_text("")
             if self.get_desktop_type().casefold() == content.casefold():
                 self.builder.get_object("remove_mate").set_sensitive(True)
-                self.builder.get_object("remove_mate").set_tooltip_text("Uninstall MATE to complete transition")
+                self.builder.get_object("remove_mate").set_tooltip_text(
+                                "Uninstall MATE to complete transition")
             else:
                 self.on_error_dialog("Error",
                                      f"{content} is installed but you are not logged into that desktop environment.\nLogout and login to the {content} session to continue.")
@@ -376,7 +377,7 @@ class App():
         conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
         if os.path.exists(conf_path):
             os.remove(conf_path)
-            print("Removed lightdm override: {}".format(path))
+            print("Removed lightdm override: {}".format(conf_path))
 
     # FIXME: polkit shit
     def write_desktop_autostart_conf(self) -> None:
@@ -403,6 +404,3 @@ class App():
 
 App()
 Gtk.main()
-
-
-
