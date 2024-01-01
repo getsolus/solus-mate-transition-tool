@@ -15,11 +15,14 @@ LOCKFILE="/var/tmp/solus-mate-transition-de"
 
 LIGHTDM_CONF_DIR = "/etc/lightdm/lightdm.conf.d/"
 LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
+CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class App():
     def __init__(self):
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("solus-mate-transition.ui")
+        ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
+
+        self.builder.add_from_file(ui_filename)
         self.window = self.builder.get_object("us.getsol.matetransition")
         self.window.connect("delete-event", Gtk.main_quit)
         self.progress = self.builder.get_object("progress")
