@@ -249,8 +249,11 @@ class App():
             self.pkit_cancellable.cancel()
 
     def get_desktop_type(self) -> str:
-        desktop = os.environ['XDG_SESSION_DESKTOP']
+        desktop = os.environ.get("XDG_SESSION_DESKTOP")
         print(desktop)
+        if desktop is None:
+            print("Warning: XDG_SESSION_DESKTOP is unset!")
+            return ""
         return desktop
 
     def install_budgie(self, button) -> None:
