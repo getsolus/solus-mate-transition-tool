@@ -325,11 +325,11 @@ class App():
         config = ConfigParser()
         config.read(conf_path)
         config.add_section("Seat:*")
-        config.set('Seat:*', 'autologin-session', session)
-        config.set('Seat:*', "autologin-user", os.getlogin())
+        config.set("Seat:*", "autologin-session", session)
+        config.set("Seat:*", "autologin-user", os.getlogin())
 
         with open(conf_path, 'w') as f:
-            config.write(f)
+            config.write(f, space_around_delimiters=False)
 
     # FIXME: polkit shit
     def remove_lightdm_conf(self) -> None:
