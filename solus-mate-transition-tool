@@ -282,37 +282,21 @@ class App():
         return desktop
 
     def install_budgie(self, button) -> None:
-        btn = self.builder.get_object("install_budgie")
-        btn.set_sensitive(False)
+        self.builder.get_object("install_budgie").set_sensitive(False)
+        self.builder.get_object("install_xfce").set_sensitive(False)
 
-        pkgs = self.resolve_budgie_pkgs()
-        print(pkgs)
-
-        if len(pkgs) == 0:
-            self.progress.set_text("Error: resolved packages already installed")
-        else:
-            self.pkit_install_async(pkgs, ref="budgie")
+        self.resolve_budgie_pkgs(ref="budgie")
 
     def install_xfce(self, button) -> None:
-        btn = self.builder.get_object("install_xfce")
+        self.builder.get_object("install_xfce").set_sensitive(False)
         self.builder.get_object("install_budgie").set_sensitive(False)
-        btn.set_sensitive(False)
 
-        pkgs = self.resolve_xfce_pkgs()
-        print(pkgs)
-
-        if len(pkgs) == 0:
-            self.progress.set_text("Error: resolved packages already installed")
-        else:
-            self.pkit_install_async(pkgs, ref="xfce")
+        self.resolve_xfce_pkgs(ref="xfce")
 
     def remove_mate(self, button) -> None:
-        pkgs = self.resolve_mate_pkgs()
-        print(pkgs)
-        if len(pkgs) == 0:
-            self.progress.set_text("Error: resolved packages already removed")
-        else:
-            self.pkit_remove_async(pkgs, ref="mate")
+        self.builder.get_object("remove_mate").set_sensitive(False)
+
+        self.resolve_mate_pkgs(ref="mate")
 
     def read_pkgs_file(self, de: str) -> list:
         path = "{}-pkgs.txt".format(de)
@@ -333,17 +317,20 @@ class App():
 
         return contents
 
-    def resolve_budgie_pkgs(self) -> list:
+    def resolve_budgie_pkgs(self, ref: str) -> None:
         pkgs = self.read_pkgs_file("budgie")
-        return self.pk_resolve_pkgs(pkgs, False)
+        print(pkgs)
+        self.pk_resolve_pkgs_async(pkgs, False, ref="budgie")
 
-    def resolve_xfce_pkgs(self) -> list:
+    def resolve_xfce_pkgs(self, ref: str) -> None:
         pkgs = self.read_pkgs_file("xfce")
-        return self.pk_resolve_pkgs(pkgs, False)
+        print(pkgs)
+        self.pk_resolve_pkgs_async(pkgs, False, ref="xfce")
 
-    def resolve_mate_pkgs(self) -> list:
+    def resolve_mate_pkgs(self, ref: str) -> None:
         pkgs = self.read_pkgs_file("mate")
-        return self.pk_resolve_pkgs(pkgs, True)
+        print(pkgs)
+        self.pk_resolve_pkgs_async(pkgs, True, ref="mate")
 
     def read_lockfile(self) -> tuple[bool, str]:
         exists = False
