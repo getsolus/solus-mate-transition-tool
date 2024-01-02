@@ -2,12 +2,14 @@
 from configparser import ConfigParser
 import os
 import subprocess
+import sys
 
 import gi
 gi.require_version('PackageKitGlib', '1.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version("Gtk", "3.0")
 
+from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import Gdk, Gio, GLib, Gtk, PackageKitGlib
 import dbus
 
@@ -21,15 +23,32 @@ LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
-class App():
-    def __init__(self):
-        self.builder = Gtk.Builder()
-        ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
+class MainWindow(Gtk.ApplicationWindow):
 
+    # FIXME: exit hacks
+    def quit_window(self, window, event):
+        exit()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        __gtype_name__ = "app_window"
+
+        self.builder = Gtk.Builder()
+        self.builder.connect_signals(self)
+        ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
         self.builder.add_from_file(ui_filename)
         self.window = self.builder.get_object("us.getsol.matetransition")
-        self.window.connect("delete-event", Gtk.main_quit)
+
+        # FIXME: We're not setting up a Gtk.Application properly which requires
+        #        hacks to exit. Not sure what i'm doing wrong
+        #self.window.connect("delete-event", Gtk.main_quit)
+        self.window.connect("delete-event", self.quit_window)
+
         self.progress = self.builder.get_object("progress")
+        self.builder.get_object("install_budgie").connect("clicked", self.install_budgie)
+        self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
+        self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
         self.window.show()
 
         self.pkit_cancellable = None
@@ -37,10 +56,6 @@ class App():
         if is_auth is False:
             self.on_error_dialog(title="Unauthorized",
                                  message="Authorization is needed to run this program")
-
-        self.builder.get_object("install_budgie").connect("clicked", self.install_budgie)
-        self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
-        self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
         exists, content = self.read_lockfile()
 
@@ -397,5 +412,18 @@ class App():
         print(pk_granted, pk_other, pk_details)
         return bool(pk_granted)
 
-App()
-Gtk.main()
+class Application(Gtk.Application):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, application_id="us.getsol.matetransition",
+                         flags=Gio.ApplicationFlags.FLAGS_NONE, **kwargs)
+        self.window = None
+
+    def do_activate(self):
+        if not self.window:
+            self.window = MainWindow(application=self)
+
+if __name__ == "__main__":
+    DBusGMainLoop(set_as_default=True)
+    app = Application()
+    exit_status = app.run(sys.argv)
+    sys.exit(exit_status)
