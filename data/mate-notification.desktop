@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Solus Transition Service
+Comment=User prompt to transition from unsupported desktop enviornment.
+Icon=software-update-available
+Exec=solus-mate-transition-notification
+TryExec=solus-mate-transition-notification
+NoDisplay=true
+OnlyShowIn=MATE;
+X-GNOME-Autostart-Phase=Application
+X-GNOME-Autostart-Notify=true
