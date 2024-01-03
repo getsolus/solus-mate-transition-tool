@@ -324,7 +324,12 @@ class App():
         self.resolve_mate_pkgs(ref="mate")
 
     def read_pkgs_file(self, de: str) -> list:
-        path = "{}-pkgs.txt".format(de)
+        pkgs_file = "{}-pkgs.txt".format(de)
+
+        if os.path.exists(os.path.join("../", pkgs_file)):
+            path = pkgs_file
+        else:
+            path = os.path.join("/usr/share/solus-mate-transition-tool/", pkgs_file)
         contents = []
 
         # FIXME: Handle reading from installed location e.g. /usr
