@@ -9,9 +9,11 @@ It uses packagekit under the hood and is extremely work in progress.
 - [x] Create exhaustive list of Budgie pkgs to install (e.g. -c desktop.budgie and budgie-desktop-branding)
 - [x] Create exhaustive list of MATE pkgs to remove (e.g. -c desktop.mate and mate-desktop-branding)
 - [x] Optional: read in pkg lists from a file
-- [ ] Policykit integration (register on dbus and Policykit prompt, pkexec is not an option due to it dropping XDG_SESSION_DESKTOP)
+- [x] Policykit integration (register on dbus and Policykit prompt, pkexec is not an option due to it dropping XDG_SESSION_DESKTOP)
 - [x] Override the default user-session to the chosen DE after install in lightdm seat until MATE is removed
 - [x] Async packagekit resolve
+- [ ] Optional: async dbus calls
+- [ ] DBus: handle errors more gracefully
 - [ ] More robust locking file
 - [ ] Handle window closures
 - [ ] Fix an annoying bug where the first element in the list isn't resolved by packagekit
