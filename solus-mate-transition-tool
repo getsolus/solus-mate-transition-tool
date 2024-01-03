@@ -212,9 +212,10 @@ class App():
             for i in package_ids:
                 name = i.get_id()
                 is_installed = i.get_info() & PackageKitGlib.InfoEnum.INSTALLED == 1
+                not_installed = i.get_info() & PackageKitGlib.InfoEnum.INSTALLED == 0
                 print("is_installed", is_installed, name)
                 # FIXME: make this not shit
-                if data == "mate" and is_installed is False:
+                if data == "mate" and not_installed is True:
                     print("Skipping {}".format(name))
                 elif data == "xfce" and is_installed is True:
                     print("Skipping {}".format(name))
@@ -275,9 +276,11 @@ class App():
         self.pkit_cancellable = Gio.Cancellable()
         if len(pkg_ids) > 0:
             print(pkg_ids)
-            self.client.install_packages_async(False, # trusted only
+            self.client.remove_packages_async(False, # trusted only
                             pkg_ids,
-                            self.pkit_cancellable,  # cancellable
+                            False, # allow deps
+                            False, # autoremove
+                            self.pkit_cancellable, # cancellable
                             self.on_pkit_progress,
                             (None, ),  # progress data
                             self.on_pkit_finished,  # callback ready
