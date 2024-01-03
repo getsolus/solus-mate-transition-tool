@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=us.getsol.matetransition.Authorizer
+Exec=python3 /usr/libexec/solus-matetransition-authorizer
+User=root

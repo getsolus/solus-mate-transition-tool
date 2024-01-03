@@ -1,0 +1,200 @@
+#!/usr/bin/env python3
+
+from configparser import ConfigParser
+import os
+import sys
+import warnings
+
+from gi.repository import GLib
+from dbus.mainloop.glib import DBusGMainLoop
+from dbus import DBusException
+import dbus
+import dbus.service
+
+DESKTOP_AUTOSTART_DIR = "/etc/xdg/autostart"
+DESKTOP_AUTOSTART_FILE = "us.getsol.matetransition.desktop"
+
+LIGHTDM_CONF_DIR = "/etc/lightdm/lightdm.conf.d/"
+LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
+
+class Authorizer(dbus.service.Object):
+    BUS_NAME = 'us.getsol.matetransition.Authorizer'
+    BUS_PATH = '/us/getsol/matetransition/Authorizer'
+    BUS_IFACE = 'us.getsol.matetransition.Authorizer'
+    POLKIT_ACTION = 'us.getsol.matetransition.Authorizer.run'
+    TIMEOUT = 120
+
+    def __init__(self, loop, bus):
+        self._loop = loop
+        dbus.service.Object.__init__(self,
+                dbus.service.BusName(self.BUS_NAME, bus=bus), self.BUS_PATH)
+        self._dbus_iface = dbus.Interface(
+                bus.get_object('org.freedesktop.DBus',
+                '/org/freedesktop/DBus'), 'org.freedesktop.DBus')
+        self._polkit_iface = dbus.Interface(
+                bus.get_object('org.freedesktop.PolicyKit1',
+                '/org/freedesktop/PolicyKit1/Authority'),
+                'org.freedesktop.PolicyKit1.Authority')
+
+        # D-Bus activation completely empties our environment
+        self._env = {
+            'PATH': '/usr/bin:/bin:/usr/sbin:/sbin',
+        }
+
+        self._timeout = None
+        self._poke_timeout()
+
+    def _poke_timeout(self):
+        if self._timeout:
+            glib.source_remove(self._timeout)
+        self._timeout = GLib.timeout_add_seconds(self.TIMEOUT, self._loop.quit)
+
+    @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
+            sender_keyword='sender', async_callbacks=('success', 'error'))
+    def write_desktop_autostart_conf(self, sender, success, error):
+
+        desktop_path = os.path.join(DESKTOP_AUTOSTART_DIR, DESKTOP_AUTOSTART_FILE)
+
+        if os.path.exists(desktop_path):
+            warnings.warn(f"{desktop_path} already exists")
+            success(desktop_path)
+            return sender
+
+        def reply_cb(result):
+            os.makedirs(os.path.dirname(DESKTOP_AUTOSTART_DIR), exist_ok=True)
+            config = ConfigParser()
+            config.optionxform = str
+            config.read(desktop_path)
+            config.add_section("Desktop Entry")
+            config.set("Desktop Entry", "Type", "Application")
+            config.set("Desktop Entry", "Name", "Solus MATE Transition Tool")
+            config.set("Desktop Entry", "Exec", "solus-mate-transition-tool")
+
+            try:
+                with open(desktop_path, 'w') as f:
+                    config.write(f, space_around_delimiters=False)
+            except IOError as e:
+                error(e)
+                return sender
+            success(desktop_path)
+
+        def error_cb(exception):
+            error(exception)
+
+        # Start polkit authorization
+        self._polkit_iface.CheckAuthorization(
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
+
+    @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
+            sender_keyword='sender', async_callbacks=('success', 'error'), in_signature='ss')
+    def write_lightdm_autologin_conf(self, session: str, user: str, sender, success, error):
+
+        if session is None:
+            error("No session passed to function")
+            return sender
+
+        if user is None:
+            error("No user passed to function")
+            return sender
+
+        if os.path.exists("/etc/lightdm/lightdm.conf"):
+            warnings.warn("User-set /etc/lightdm/lightdm.conf exists, our temporary override may not function")
+
+        conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
+
+        if os.path.exists(conf_path):
+            warnings.warn(f"{conf_path} already exists")
+            success(conf_path)
+            return sender
+
+        if session != "budgie" or session != "xfce":
+            warnings.warn(f"Warning: untested session type: {session}")
+
+        def reply_cb(result):
+            os.makedirs(os.path.dirname(LIGHTDM_CONF_DIR), exist_ok=True)
+
+            config = ConfigParser()
+            config.read(conf_path)
+            config.add_section("Seat:*")
+            config.set("Seat:*", "autologin-session", session)
+            config.set("Seat:*", "autologin-user", user)
+
+            try:
+                with open(conf_path, 'w') as f:
+                    config.write(f, space_around_delimiters=False)
+            except IOError as e:
+                error(e)
+                return sender
+            success(conf_path)
+
+        def error_cb(exception):
+            error(exception)
+
+        # Start polkit authorization
+        self._polkit_iface.CheckAuthorization(
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
+
+    @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
+            sender_keyword='sender', async_callbacks=('success', 'error'))
+    def remove_desktop_autostart_conf(self, sender, success, error):
+
+        desktop_path = os.path.join(DESKTOP_AUTOSTART_DIR, DESKTOP_AUTOSTART_FILE)
+
+        if not os.path.exists(desktop_path):
+            warnings.warn(f"{desktop_path} doesn't exist, skipping.")
+            success(desktop_path)
+            return sender
+
+        def reply_cb(result):
+            try:
+                os.remove(desktop_path)
+            except IOError as e:
+                error(e)
+                return sender
+            success(desktop_path)
+
+        def error_cb(exception):
+            error(exception)
+
+        # Start polkit authorization
+        self._polkit_iface.CheckAuthorization(
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
+
+    @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
+            sender_keyword='sender', async_callbacks=('success', 'error'))
+    def remove_lightdm_conf(self, sender, success, error):
+
+        conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
+
+        if not os.path.exists(conf_path):
+            warnings.warn(f"{conf_path} doesn't exist, skipping.")
+            success(conf_path)
+            return sender
+
+        def reply_cb(result):
+            try:
+                os.remove(conf_path)
+            except IOError as e:
+                error(e)
+                return sender
+            success(conf_path)
+
+        def error_cb(exception):
+            error(exception)
+
+        # Start polkit authorization
+        self._polkit_iface.CheckAuthorization(
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
+
+if __name__ == '__main__':
+    if os.geteuid() != 0:
+        sys.stderr.write("Solus MATE Transition Tool Authorizer: Need to be ran as root\n")
+        sys.exit(1)
+    loop = GLib.MainLoop()
+    DBusGMainLoop(set_as_default=True)
+    authorizer = Authorizer(loop, dbus.SystemBus())
+    loop.run()
