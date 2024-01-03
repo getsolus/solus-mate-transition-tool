@@ -19,8 +19,8 @@ It uses packagekit under the hood and is extremely work in progress.
 - [ ] Fix an annoying bug where the first element in the list isn't resolved by packagekit
 - [x] Wait for packagekit async tasks (wrap around asyncio?)
 - [x] Prompt reboot after installing
-- [ ] Notification prompt for existing MATE installs (take inspo from solus-update-checker)
+- [x] Notification prompt for existing MATE installs (take inspo from solus-update-checker)
 - [x] Temporary autostart & autologin after new DE install
-- [ ] Packaging: setup meson
+- [x] Packaging: setup meson
 - [ ] Code cleanup: try and stop abusing callback data with hardcoded if statements
 - [ ] Code cleanup: more robust error checking
