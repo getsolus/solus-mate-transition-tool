@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Solus MATE Transition Tool
+Comment=Solus tool to transition away from the MATE destop
+Exec=/usr/bin/solus-mate-transition-tool
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=software-update-urgent
+Categories=System;
+Keywords=Updates;Upgrade;Sources;Repositories;Preferences;Install;Uninstall;Program;Software;

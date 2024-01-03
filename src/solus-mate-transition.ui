@@ -148,7 +148,7 @@
                     <property name="can-focus">False</property>
                     <property name="label" translatable="yes">As of Solus 4.5 the MATE Desktop Enivornment is no longer
 being maintained. This tool will uninstall the MATE desktop
-environment and install Budgie or XFCE in it's place.</property>
+environment and install Budgie or XFCE in its place.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

@@ -3,6 +3,7 @@
 from configparser import ConfigParser
 import os
 import subprocess
+import sys
 
 import gi
 gi.require_version('Gdk', '3.0')
@@ -31,7 +32,10 @@ class App():
     def __init__(self):
 
         self.builder = Gtk.Builder()
-        ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
+        if os.path.exists(os.path.join(CURRENT_DIR, "solus-mate-transition.ui")):
+            ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
+        else:
+            ui_filename = "/usr/share/solus-mate-transition-tool/solus-mate-transition.ui"
 
         self.builder.add_from_file(ui_filename)
         self.window = self.builder.get_object("us.getsol.matetransition")
@@ -78,7 +82,8 @@ class App():
                     self.AUTHORIZER_PATH)
             self.iface = dbus.Interface(self.obj, self.AUTHORIZER_IFACE)
         except dbus.exceptions.DBusException as e:
-            sys.stderr.write(e)
+            print(f"Could not connect to {self.AUTHORIZER_NAME}")
+            sys.stderr.write(str(e))
             sys.exit(1)
 
         # FIXME: If you refresh repos then immediately try to resolve pkgs the first
