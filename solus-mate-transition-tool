@@ -1,12 +1,13 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+
 from configparser import ConfigParser
 import os
 import subprocess
 
 import gi
-gi.require_version('PackageKitGlib', '1.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version("Gtk", "3.0")
+gi.require_version('PackageKitGlib', '1.0')
 
 from gi.repository import Gdk, Gio, GLib, Gtk, PackageKitGlib
 import dbus
@@ -22,7 +23,13 @@ LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class App():
+
+    AUTHORIZER_NAME = 'us.getsol.matetransition.Authorizer'
+    AUTHORIZER_PATH = '/us/getsol/matetransition/Authorizer'
+    AUTHORIZER_IFACE = 'us.getsol.matetransition.Authorizer'
+
     def __init__(self):
+
         self.builder = Gtk.Builder()
         ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
 
@@ -33,10 +40,6 @@ class App():
         self.window.show()
 
         self.pkit_cancellable = None
-        is_auth = self.check_polkit_auth()
-        if is_auth is False:
-            self.on_error_dialog(title="Unauthorized",
-                                 message="Authorization is needed to run this program")
 
         self.builder.get_object("install_budgie").connect("clicked", self.install_budgie)
         self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
@@ -68,6 +71,16 @@ class App():
                                      f"{content} is installed but you are not logged into that desktop environment.\nLogout and login to the {content} session to continue.")
 
         self.client = PackageKitGlib.Client()
+
+        # init dbus conn to our authorizer service
+        try:
+            self.obj = dbus.SystemBus().get_object(self.AUTHORIZER_NAME,
+                    self.AUTHORIZER_PATH)
+            self.iface = dbus.Interface(self.obj, self.AUTHORIZER_IFACE)
+        except dbus.exceptions.DBusException as e:
+            sys.stderr.write(e)
+            sys.exit(1)
+
         # FIXME: If you refresh repos then immediately try to resolve pkgs the first
         #        pkg will fail to resolve
         #self.pkit_update()
@@ -115,6 +128,33 @@ class App():
         self.progress.set_fraction(100.0)
         self.progress.set_text("Finished")
 
+    def write_temporary_config_files(self, ref: str) -> None:
+        try:
+            result = self.iface.write_desktop_autostart_conf()
+            result = self.iface.write_lightdm_autologin_conf(ref, os.getlogin())
+            print(result)
+        except dbus.exceptions.DBusException as e:
+            # dbus-python exception handling is problematic.
+            if 'Authorization failed' in str(e):
+                # The user knows this already; don't show a FatalErrorWindow.
+                sys.exit(1)
+            else:
+                self.on_error_dialog("Failed to write temporary config file", e)
+
+    def remove_temporary_config_files(self) -> None:
+        try:
+            result = self.iface.remove_desktop_autostart_conf()
+            print(result)
+            result = self.iface.remove_lightdm_conf()
+            print(result)
+        except dbus.exceptions.DBusException as e:
+            # dbus-python exception handling is problematic.
+            if 'Authorization failed' in str(e):
+                # The user knows this already; don't show a FatalErrorWindow.
+                sys.exit(1)
+            else:
+                self.on_error_dialog("Failed to remove temporary config file", e)
+
     def on_pkit_progress(self, progress, ptype, data=None):
         if progress.get_status() == PackageKitGlib.StatusEnum.DOWNLOAD:
             self.progress.set_text("Downloading...")
@@ -148,18 +188,15 @@ class App():
         # FIXME: callback data/ref. Clean this shit up
         if data == "xfce":
             self._write_lockfile("XFCE")
-            self._write_lightdm_autologin_conf("xfce")
-            self._write_desktop_autostart_conf()
+            self.write_temporary_config_files("xfce")
             self.on_success_reboot_dialog(de="XFCE", logo="xfce4-logo")
         if data == "budgie":
             self._write_lockfile("Budgie")
-            self._write_lightdm_autologin_conf("budgie")
-            self._write_desktop_autostart_conf()
+            self.write_temporary_config_files("budgie")
             self.on_success_reboot_dialog(de="Budgie", logo="budgie-start-here-symbolic")
         if data == "mate":
             self._remove_lockfile()
-            self._remove_lightdm_conf()
-            self._remove_desktop_autostart_conf()
+            self.remove_temporary_config_files()
 
     def pk_resolve_pkgs_async(self, pkgs: list, only_installed: bool, ref: str) -> None:
         print("Pkit resolve")
@@ -330,72 +367,6 @@ class App():
         if os.path.exists(LOCKFILE):
             os.remove(LOCKFILE)
             print("Removed {}".format(LOCKFILE))
-
-    # FIXME: polkit shit
-    def _write_lightdm_autologin_conf(self, session: str) -> None:
-        if os.path.exists("/etc/lightdm/lightdm.conf"):
-            print("Warning: user-set /etc/lightdm/lightdm.conf exists, our temporary override may not function")
-
-        if session != "mate" or session != "xfce":
-            print("Warning: untested session type {}".format(session))
-
-        conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
-
-        os.makedirs(os.path.dirname(LIGHTDM_CONF_DIR), exist_ok=True)
-        config = ConfigParser()
-        config.read(conf_path)
-        config.add_section("Seat:*")
-        config.set("Seat:*", "autologin-session", session)
-        config.set("Seat:*", "autologin-user", os.getlogin())
-
-        with open(conf_path, 'w') as f:
-            config.write(f, space_around_delimiters=False)
-
-    # FIXME: polkit shit
-    def _remove_lightdm_conf(self) -> None:
-        conf_path = os.path.join(LIGHTDM_CONF_DIR, LIGHTDM_CONF_FILE)
-        if os.path.exists(conf_path):
-            os.remove(conf_path)
-            print("Removed lightdm override: {}".format(conf_path))
-
-    # FIXME: polkit shit
-    def _write_desktop_autostart_conf(self) -> None:
-        desktop_path = os.path.join(DESKTOP_AUTOSTART_DIR, DESKTOP_AUTOSTART_FILE)
-
-        os.makedirs(os.path.dirname(DESKTOP_AUTOSTART_DIR), exist_ok=True)
-        config = ConfigParser()
-        config.optionxform = str
-        config.read(desktop_path)
-        config.add_section("Desktop Entry")
-        config.set("Desktop Entry", "Type", "Application")
-        config.set("Desktop Entry", "Name", "Solus MATE Transition Tool")
-        config.set("Desktop Entry", "Exec", "solus-mate-transition-tool")
-
-        with open(desktop_path, 'w') as f:
-            config.write(f, space_around_delimiters=False)
-
-    # FIXME: polkit shit
-    def _remove_desktop_autostart_conf(self) -> None:
-        desktop_path = os.path.join(DESKTOP_AUTOSTART_DIR, DESKTOP_AUTOSTART_FILE)
-        if os.path.exists(desktop_path):
-            os.remove(desktop_path)
-            print(f"Removed autostart entry: {desktop_path}")
-
-    def check_polkit_auth(self) -> bool:
-        bus = dbus.SystemBus()
-        proxy = bus.get_object('org.freedesktop.PolicyKit1', '/org/freedesktop/PolicyKit1/Authority')
-        authority = dbus.Interface(proxy, dbus_interface='org.freedesktop.PolicyKit1.Authority')
-        system_bus_name = bus.get_unique_name()
-
-        subject = ('system-bus-name', {'name' : system_bus_name})
-        action_id = "us.getsol.matetransition.run"
-        details = {}
-        flags = 1            # AllowUserInteraction flag
-        cancellation_id = '' # No cancellation id
-
-        (pk_granted, pk_other, pk_details) = authority.CheckAuthorization(subject, action_id, details, flags, cancellation_id)
-        print(pk_granted, pk_other, pk_details)
-        return bool(pk_granted)
 
 App()
 Gtk.main()
