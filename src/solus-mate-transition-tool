@@ -52,8 +52,7 @@ class App():
         # DE strings for Budgie
         self.budgie_id = "budgie"
         self.budgie_pretty_name = "Budgie"
-        self.budgie_desktop_session = "budgie-session"
-        self.budgie_autologin_session = "budgie-desktop"
+        self.budgie_desktop_session = "budgie-desktop"
         self.budgie_logo = "budgie-start-here-symbolic"
 
         # DE strings for MATE
@@ -65,7 +64,6 @@ class App():
         self.xfce_id = "xfce"
         self.xfce_pretty_name = "XFCE"
         self.xfce_desktop_session = "xfce"
-        self.xfce_autologin_session = "xfce"
         self.xfce_logo = "xfce4-logo"
 
         self.startup_checks()
@@ -97,10 +95,9 @@ class App():
 
     def startup_checks(self) -> None:
         exists, de, pretty_name, desktop_session = self.read_lockfile()
-        print(exists, de, pretty_name, desktop_session)
 
         # No lockfile exists so we want to be using the MATE session
-        if exists == False and self.get_desktop_type() != "mate":
+        if exists == False and self.get_desktop_type() != self.mate_desktop_session:
             self.state_disable_install()
             self.on_error_dialog("Error", "Logout and login to the MATE session first to continue")
 
@@ -238,7 +235,7 @@ class App():
             print("Pkit update error:", e)
             # Reset button states on err
             # FIXME, handle state more generically!
-            if data == "mate":
+            if data == self.mate_id:
                 self.builder.get_object("remove_mate").set_sensitive(True)
             else:
                 self.builder.get_object("install_xfce").set_sensitive(True)
@@ -248,11 +245,11 @@ class App():
         # FIXME: callback data/ref. Clean this shit up
         if data == self.xfce_id:
             self._write_lockfile(de=self.xfce_id, pretty_name=self.xfce_pretty_name, desktop_session=self.xfce_desktop_session)
-            self.write_temporary_config_files(ref=self.xfce_id)
+            self.write_temporary_config_files(ref=self.xfce_desktop_session)
             self.on_success_reboot_dialog(de=self.xfce_id, logo=self.xfce_logo)
         if data == self.budgie_id:
-            self._write_lockfile(de=self.budgie_id, pretty_name=self.xfce_pretty_name, desktop_session=self.xfce_desktop_session)
-            self.write_temporary_config_files(self.budgie_autologin_session)
+            self._write_lockfile(de=self.budgie_id, pretty_name=self.budgie_pretty_name, desktop_session=self.budgie_desktop_session)
+            self.write_temporary_config_files(ref=self.budgie_desktop_session)
             self.on_success_reboot_dialog(de=self.budgie_pretty_name, logo=self.budgie_logo)
         if data == self.mate_id:
             _, _, pretty_name, _ = self.read_lockfile()
@@ -278,21 +275,21 @@ class App():
                 not_installed = i.get_info() & PackageKitGlib.InfoEnum.INSTALLED == 0
                 print("is_installed", is_installed, name)
                 # FIXME: make this not shit
-                if data == "mate" and not_installed is True:
+                if data == self.mate_id and not_installed is True:
                     print("Skipping {}".format(name))
-                elif data == "xfce" and is_installed is True:
+                elif data == self.xfce_id and is_installed is True:
                     print("Skipping {}".format(name))
-                elif data == "budgie" and is_installed is True:
+                elif data == self.budgie_id and is_installed is True:
                     print("Skipping {}".format(name))
                 else:
                     pkgs.append(name)
 
             # FIXME: Make this not shit
-            if data == "xfce":
+            if data == self.xfce_id:
                 self.pkit_install_async(pkgs, ref=data)
-            if data == "budgie":
+            if data == self.budgie_id:
                 self.pkit_install_async(pkgs, ref=data)
-            if data == "mate":
+            if data == self.mate_id:
                 self.pkit_remove_async(pkgs, ref=data)
             return True
 
@@ -368,18 +365,18 @@ class App():
         self.builder.get_object("install_budgie").set_sensitive(False)
         self.builder.get_object("install_xfce").set_sensitive(False)
 
-        self.resolve_budgie_pkgs(ref="budgie")
+        self.resolve_budgie_pkgs(ref=self.budgie_id)
 
     def install_xfce(self, button) -> None:
         self.builder.get_object("install_xfce").set_sensitive(False)
         self.builder.get_object("install_budgie").set_sensitive(False)
 
-        self.resolve_xfce_pkgs(ref="xfce")
+        self.resolve_xfce_pkgs(ref=self.xfce_id)
 
     def remove_mate(self, button) -> None:
         self.builder.get_object("remove_mate").set_sensitive(False)
 
-        self.resolve_mate_pkgs(ref="mate")
+        self.resolve_mate_pkgs(ref=self.mate_id)
 
     def read_pkgs_file(self, de: str) -> list:
         pkgs_file = "{}-pkgs.txt".format(de)
@@ -406,32 +403,33 @@ class App():
         return contents
 
     def resolve_budgie_pkgs(self, ref: str) -> None:
-        pkgs = self.read_pkgs_file("budgie")
+        pkgs = self.read_pkgs_file(self.budgie_id)
         print(pkgs)
         self.pk_resolve_pkgs_async(pkgs, False, ref)
 
     def resolve_xfce_pkgs(self, ref: str) -> None:
-        pkgs = self.read_pkgs_file("xfce")
+        pkgs = self.read_pkgs_file(self.xfce_id)
         print(pkgs)
         self.pk_resolve_pkgs_async(pkgs, False, ref)
 
     def resolve_mate_pkgs(self, ref: str) -> None:
-        pkgs = self.read_pkgs_file("mate")
+        pkgs = self.read_pkgs_file(self.mate_id)
         print(pkgs)
         self.pk_resolve_pkgs_async(pkgs, True, ref)
 
     def read_lockfile(self) -> tuple[bool, str, str, str]:
         exists = False
 
-        if os.path.exists(LOCKFILE):
+        if not os.path.exists(LOCKFILE):
+            return exists, None, None, None
+        else:
             exists = True
             config = ConfigParser()
             config.read(LOCKFILE)
             de = config.get("main", "de")
             pretty_name = config.get("main", "pretty_name")
             desktop_session = config.get("main", "desktop_session")
-
-        return exists, de, pretty_name, desktop_session
+            return exists, de, pretty_name, desktop_session
 
     def _write_lockfile(self, de: str, pretty_name: str, desktop_session: str) -> None:
         if de is None:
@@ -478,7 +476,7 @@ class App():
                 self.progress.set_text("Error: Couldn't resolve ourself with packagekit")
 
         self.pkit_cancellable = Gio.Cancellable()
-        self.client.resolve_async(PackageKitGlib.FilterEnum.INSTALLED, # filters
+        self.client.resolve_async(PackageKitGlib.FilterEnum.from_string("INSTALLED"), # filters
                             [pkg],
                             self.pkit_cancellable,  # cancellable
                             self.on_pkit_progress,
