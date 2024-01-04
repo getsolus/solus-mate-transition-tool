@@ -109,7 +109,7 @@ class Authorizer(dbus.service.Object):
             success(conf_path)
             return sender
 
-        if session != "budgie" or session != "xfce":
+        if session != "budgie-desktop" or session != "xfce":
             warnings.warn(f"Warning: untested session type: {session}")
 
         def reply_cb(result):

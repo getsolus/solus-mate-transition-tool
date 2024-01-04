@@ -49,6 +49,25 @@ class App():
         self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
         self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
+        # DE strings for Budgie
+        self.budgie_id = "budgie"
+        self.budgie_pretty_name = "Budgie"
+        self.budgie_desktop_session = "budgie-session"
+        self.budgie_autologin_session = "budgie-desktop"
+        self.budgie_logo = "budgie-start-here-symbolic"
+
+        # DE strings for MATE
+        self.mate_id = "mate"
+        self.mate_pretty_name = "MATE"
+        self.mate_desktop_session = "mate"
+
+        # DE strings for XFCE
+        self.xfce_id = "xfce"
+        self.xfce_pretty_name = "XFCE"
+        self.xfce_desktop_session = "xfce"
+        self.xfce_autologin_session = "xfce"
+        self.xfce_logo = "xfce4-logo"
+
         self.startup_checks()
 
         self.client = PackageKitGlib.Client()
@@ -77,7 +96,8 @@ class App():
         self.builder.get_object("install_xfce").set_tooltip_text("")
 
     def startup_checks(self) -> None:
-        exists, content = self.read_lockfile()
+        exists, de, pretty_name, desktop_session = self.read_lockfile()
+        print(exists, de, pretty_name, desktop_session)
 
         # No lockfile exists so we want to be using the MATE session
         if exists == False and self.get_desktop_type() != "mate":
@@ -85,14 +105,14 @@ class App():
             self.on_error_dialog("Error", "Logout and login to the MATE session first to continue")
 
         # Lockfile exists so ensure the current DE session matches the lockfile
-        if exists is True and content is not None:
+        if exists is True and de is not None:
             # FIXME: Maybe resolve packages again here to confirm all is installed
             self.state_disable_install()
-            if self.get_desktop_type().casefold() == content.casefold():
+            if self.get_desktop_type().casefold() == desktop_session.casefold():
                 self.state_enable_remove()
             else:
                 self.on_error_dialog("Error",
-                                     f"{content} is installed but you are not logged into that desktop environment.\nLogout and login to the {content} session to continue.")
+                                     f"{pretty_name} is installed but you are not logged into that desktop environment.\nLogout and login to the {pretty_name} session to continue.")
 
 
     def on_success_reboot_dialog(self, de: str, logo: str) -> None:
@@ -223,23 +243,23 @@ class App():
             else:
                 self.builder.get_object("install_xfce").set_sensitive(True)
                 self.builder.get_object("install_budgie").set_sensitive(True)
-            return
+            #return
 
         # FIXME: callback data/ref. Clean this shit up
-        if data == "xfce":
-            self._write_lockfile("XFCE")
-            self.write_temporary_config_files("xfce")
-            self.on_success_reboot_dialog(de="XFCE", logo="xfce4-logo")
-        if data == "budgie":
-            self._write_lockfile("Budgie")
-            self.write_temporary_config_files("budgie")
-            self.on_success_reboot_dialog(de="Budgie", logo="budgie-start-here-symbolic")
-        if data == "mate":
-            _, de = self.read_lockfile()
+        if data == self.xfce_id:
+            self._write_lockfile(de=self.xfce_id, pretty_name=self.xfce_pretty_name, desktop_session=self.xfce_desktop_session)
+            self.write_temporary_config_files(ref=self.xfce_id)
+            self.on_success_reboot_dialog(de=self.xfce_id, logo=self.xfce_logo)
+        if data == self.budgie_id:
+            self._write_lockfile(de=self.budgie_id, pretty_name=self.xfce_pretty_name, desktop_session=self.xfce_desktop_session)
+            self.write_temporary_config_files(self.budgie_autologin_session)
+            self.on_success_reboot_dialog(de=self.budgie_pretty_name, logo=self.budgie_logo)
+        if data == self.mate_id:
+            _, _, pretty_name, _ = self.read_lockfile()
             self._remove_lockfile()
             self.remove_temporary_config_files()
             self._remove_transition_tool()
-            self.on_success_complete_dialog(de)
+            self.on_success_complete_dialog(de=pretty_name)
 
     def pk_resolve_pkgs_async(self, pkgs: list, only_installed: bool, ref: str) -> None:
         print("Pkit resolve")
@@ -400,19 +420,36 @@ class App():
         print(pkgs)
         self.pk_resolve_pkgs_async(pkgs, True, ref)
 
-    def read_lockfile(self) -> tuple[bool, str]:
+    def read_lockfile(self) -> tuple[bool, str, str, str]:
         exists = False
-        contents = ""
+
         if os.path.exists(LOCKFILE):
             exists = True
-            with open(LOCKFILE, "r") as reader:
-                contents = reader.read()
-        return exists, contents
+            config = ConfigParser()
+            config.read(LOCKFILE)
+            de = config.get("main", "de")
+            pretty_name = config.get("main", "pretty_name")
+            desktop_session = config.get("main", "desktop_session")
 
-    def _write_lockfile(self, de: str) -> None:
+        return exists, de, pretty_name, desktop_session
+
+    def _write_lockfile(self, de: str, pretty_name: str, desktop_session: str) -> None:
+        if de is None:
+            raise IntersectException("de must not be empty")
+        if pretty_name is None:
+            raise IntersectException("pretty_name must not be empty")
+        if desktop_session is None:
+            raise IntersectException("desktop_session must not be empty")
+
+        config = ConfigParser()
+        config.add_section("main")
+        config.set("main", "de", de)
+        config.set("main", "pretty_name", pretty_name)
+        config.set("main", "desktop_session", desktop_session)
+
         with open(LOCKFILE, 'w') as writer:
-            writer.write(de)
-            print("wrote lock file")
+                config.write(writer)
+                print(f"Successfully wrote {LOCKFILE}")
 
     def _remove_lockfile(self) -> None:
         if os.path.exists(LOCKFILE):
