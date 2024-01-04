@@ -49,32 +49,12 @@ class App():
         self.builder.get_object("install_xfce").connect("clicked", self.install_xfce)
         self.builder.get_object("remove_mate").connect("clicked", self.remove_mate)
 
-        exists, content = self.read_lockfile()
-
-        # No lockfile exists so we want to be using the MATE session
-        if exists == False and self.get_desktop_type() != "mate":
-            self.builder.get_object("install_budgie").set_sensitive(False)
-            self.builder.get_object("install_budgie").set_tooltip_text("")
-            self.builder.get_object("install_xfce").set_sensitive(False)
-            self.builder.get_object("install_xfce").set_tooltip_text("")
-            self.on_error_dialog("Error", "Logout and login to the MATE session first to continue")
-
-        # Lockfile exists so ensure the current DE session matches the lockfile
-        if exists is True and content is not None:
-            # FIXME: Maybe resolve packages again here to confirm all is installed
-            self.builder.get_object("install_budgie").set_sensitive(False)
-            self.builder.get_object("install_budgie").set_tooltip_text("")
-            self.builder.get_object("install_xfce").set_sensitive(False)
-            self.builder.get_object("install_xfce").set_tooltip_text("")
-            if self.get_desktop_type().casefold() == content.casefold():
-                self.builder.get_object("remove_mate").set_sensitive(True)
-                self.builder.get_object("remove_mate").set_tooltip_text(
-                                "Uninstall MATE to complete transition")
-            else:
-                self.on_error_dialog("Error",
-                                     f"{content} is installed but you are not logged into that desktop environment.\nLogout and login to the {content} session to continue.")
+        self.startup_checks()
 
         self.client = PackageKitGlib.Client()
+        # FIXME: If you refresh repos then immediately try to resolve pkgs the first
+        #        pkg will fail to resolve
+        #self.pkit_update()
 
         # init dbus conn to our authorizer service
         try:
@@ -86,9 +66,34 @@ class App():
             sys.stderr.write(str(e))
             sys.exit(1)
 
-        # FIXME: If you refresh repos then immediately try to resolve pkgs the first
-        #        pkg will fail to resolve
-        #self.pkit_update()
+    def state_enable_remove(self) -> None:
+        self.builder.get_object("remove_mate").set_sensitive(True)
+        self.builder.get_object("remove_mate").set_tooltip_text("Uninstall MATE to complete transition")
+
+    def state_disable_install(self) -> None:
+        self.builder.get_object("install_budgie").set_sensitive(False)
+        self.builder.get_object("install_budgie").set_tooltip_text("")
+        self.builder.get_object("install_xfce").set_sensitive(False)
+        self.builder.get_object("install_xfce").set_tooltip_text("")
+
+    def startup_checks(self) -> None:
+        exists, content = self.read_lockfile()
+
+        # No lockfile exists so we want to be using the MATE session
+        if exists == False and self.get_desktop_type() != "mate":
+            self.state_disable_install()
+            self.on_error_dialog("Error", "Logout and login to the MATE session first to continue")
+
+        # Lockfile exists so ensure the current DE session matches the lockfile
+        if exists is True and content is not None:
+            # FIXME: Maybe resolve packages again here to confirm all is installed
+            self.state_disable_install()
+            if self.get_desktop_type().casefold() == content.casefold():
+                self.state_enable_remove()
+            else:
+                self.on_error_dialog("Error",
+                                     f"{content} is installed but you are not logged into that desktop environment.\nLogout and login to the {content} session to continue.")
+
 
     def on_success_reboot_dialog(self, de: str, logo: str) -> None:
         dialog = Gtk.MessageDialog(
@@ -107,7 +112,7 @@ class App():
         )
 
         deimg = Gtk.Image()
-        deimg.set_from_icon_name(logo, size = Gtk.IconSize.MENU)
+        deimg.set_from_icon_name(logo, size = Gtk.IconSize.DIALOG)
         # FIXME. MessageDialog.set_image is deprecated
         dialog.set_image(deimg)
 
@@ -211,7 +216,13 @@ class App():
         except Exception as e:
             self.progress.set_text(f"Error: {e}")
             print("Pkit update error:", e)
-            # FIXME: handle application state here
+            # Reset button states on err
+            # FIXME, handle state more generically!
+            if data == "mate":
+                self.builder.get_object("remove_mate").set_sensitive(True)
+            else:
+                self.builder.get_object("install_xfce").set_sensitive(True)
+                self.builder.get_object("install_budgie").set_sensitive(True)
             return
 
         # FIXME: callback data/ref. Clean this shit up
