@@ -276,7 +276,7 @@ class App():
                 self.pkit_remove_async(pkgs, ref=data)
             return True
 
-        self.client.resolve_async(False, # trusted only
+        self.client.resolve_async(False, # transaction flags (filters, etc.)
                                     pkgs,
                                     self.pkit_cancellable,  # cancellable
                                     self.on_pkit_progress,
@@ -289,7 +289,7 @@ class App():
         """Refresh packagekit repos"""
         print("Pkit update")
         self.pkit_cancellable = Gio.Cancellable()
-        self.client.refresh_cache_async(True, # trusted only
+        self.client.refresh_cache_async(True, # transaction flags (filters, etc.)
                                         self.pkit_cancellable, # cancellable
                                         self.on_pkit_progress,
                                         (None, ), # progress data
@@ -304,7 +304,7 @@ class App():
         print(pkg_ids)
         if len(pkg_ids) > 0:
             print(pkg_ids)
-            self.client.install_packages_async(False, # trusted only
+            self.client.install_packages_async(False, # transaction flags (filters, etc.)
                             pkg_ids,
                             self.pkit_cancellable,  # cancellable
                             self.on_pkit_progress,
