@@ -21,7 +21,8 @@ class Authorizer(dbus.service.Object):
     BUS_NAME = 'us.getsol.matetransition.Authorizer'
     BUS_PATH = '/us/getsol/matetransition/Authorizer'
     BUS_IFACE = 'us.getsol.matetransition.Authorizer'
-    POLKIT_ACTION = 'us.getsol.matetransition.Authorizer.run'
+    POLKIT_ACTION_RUN = 'us.getsol.matetransition.Authorizer.run'
+    POLKIT_ACTION_CLEANUP = 'us.getsol.matetransition.Authorizer.cleanup'
     TIMEOUT = 120
 
     def __init__(self, loop, bus):
@@ -83,7 +84,7 @@ class Authorizer(dbus.service.Object):
 
         # Start polkit authorization
         self._polkit_iface.CheckAuthorization(
-                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION_RUN,
                 {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
 
     @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
@@ -133,7 +134,7 @@ class Authorizer(dbus.service.Object):
 
         # Start polkit authorization
         self._polkit_iface.CheckAuthorization(
-                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION_RUN,
                 {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
 
     @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
@@ -160,7 +161,7 @@ class Authorizer(dbus.service.Object):
 
         # Start polkit authorization
         self._polkit_iface.CheckAuthorization(
-                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION_CLEANUP,
                 {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
 
     @dbus.service.method(dbus_interface=BUS_IFACE, out_signature='s',
@@ -187,7 +188,7 @@ class Authorizer(dbus.service.Object):
 
         # Start polkit authorization
         self._polkit_iface.CheckAuthorization(
-                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION,
+                ('system-bus-name', {'name': sender}), self.POLKIT_ACTION_CLEANUP,
                 {}, 0x1, '', reply_handler=reply_cb, error_handler=error_cb)
 
 if __name__ == '__main__':
