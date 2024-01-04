@@ -211,6 +211,8 @@ class App():
         except Exception as e:
             self.progress.set_text(f"Error: {e}")
             print("Pkit update error:", e)
+            # FIXME: handle application state here
+            return
 
         # FIXME: callback data/ref. Clean this shit up
         if data == "xfce":
@@ -224,8 +226,8 @@ class App():
         if data == "mate":
             _, de = self.read_lockfile()
             self._remove_lockfile()
-            self.on_success_complete_dialog(de)
             self.remove_temporary_config_files()
+            self.on_success_complete_dialog(de)
 
     def pk_resolve_pkgs_async(self, pkgs: list, only_installed: bool, ref: str) -> None:
         print("Pkit resolve")
