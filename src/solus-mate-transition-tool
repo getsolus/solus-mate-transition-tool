@@ -238,6 +238,7 @@ class App():
             _, de = self.read_lockfile()
             self._remove_lockfile()
             self.remove_temporary_config_files()
+            self._remove_transition_tool()
             self.on_success_complete_dialog(de)
 
     def pk_resolve_pkgs_async(self, pkgs: list, only_installed: bool, ref: str) -> None:
@@ -417,6 +418,37 @@ class App():
         if os.path.exists(LOCKFILE):
             os.remove(LOCKFILE)
             print("Removed {}".format(LOCKFILE))
+
+    def _remove_transition_tool(self) -> None:
+        """ Uninstall ourselves after successfully completing """
+        pkg = "solus-mate-transition-tool"
+
+        def on_resolved(source, result, data=None):
+            """ Inner function callback from resolve_async """
+            results = source.generic_finish(result)
+            package_ids = results.get_package_array()
+
+            if len(package_ids) == 0:
+                return
+
+            pkgs = []
+            for i in package_ids:
+                pkgs.append(i.get_id())
+
+            if len(package_ids) > 0:
+                self.pkit_remove_async(pkgs, None)
+            else:
+                self.progress.set_text("Error: Couldn't resolve ourself with packagekit")
+
+        self.pkit_cancellable = Gio.Cancellable()
+        self.client.resolve_async(PackageKitGlib.FilterEnum.INSTALLED, # filters
+                            [pkg],
+                            self.pkit_cancellable,  # cancellable
+                            self.on_pkit_progress,
+                            (None, ),  # progress data
+                            on_resolved,  # callback ready
+                            None  # callback data
+                            )
 
 App()
 Gtk.main()
