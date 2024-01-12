@@ -60,6 +60,9 @@ class MateNotificationApp(Gio.Application):
 
     def do_reshow_notification(self):
         """Do we need to show the notification?"""
+        if os.getlogin() == "live":
+            return False
+
         if self.is_reshow_notification_required():
             self.show_notification()
             return True
