@@ -1,0 +1,137 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-03-03 17:25-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.13.1\n"
+
+#: src/solus-mate-transition-tool.py:92
+msgid "Uninstall MATE to complete transition"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:106 src/solus-mate-transition-tool.py:115
+msgid "Error"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:106
+msgid "Logout and login to the MATE session first to continue"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:116
+msgid ""
+"{} is installed but you are not logged into that desktop environment.\n"
+"Logout and login to the {} session to continue."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:130
+msgid ""
+"Reboot now to login to your new desktop environment automatically. \n"
+"\n"
+"This program will then auto-start to prompt you to remove MATE."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:152
+msgid "Successfully Completed Transition to {}"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:154
+msgid "We hope you enjoy using your new desktop environment."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:182
+msgid "Finished"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:195
+msgid "Failed to write temporary config file"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:209
+msgid "Failed to remove temporary config file"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:213
+msgid "Downloading..."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:215
+msgid "Installing..."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:217
+msgid "Removing..."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:219
+msgid "Cancelling..."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:221
+msgid "Loading cache..."
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:229
+msgid "Pkit refreshed cache"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:230
+msgid "Cache updated"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:234
+msgid "Pkit update finished"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:238
+msgid "Error: {}"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:239
+msgid "Pkit update error:"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:266
+msgid "Pkit resolve"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:280
+msgid "is_installed"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:283 src/solus-mate-transition-tool.py:285
+#: src/solus-mate-transition-tool.py:287
+msgid "Skipping {}"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:311
+msgid "Pkit update"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:323
+msgid "Pkit install"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:339
+msgid "Pkit remove"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:356
+msgid "Pkit cancel"
+msgstr ""
+
+#: src/solus-mate-transition-tool.py:364
+msgid "Warning: XDG_SESSION_DESKTOP is unset!"
+msgstr ""
+
