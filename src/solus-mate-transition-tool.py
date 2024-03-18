@@ -73,9 +73,7 @@ class App():
         self.startup_checks()
 
         self.client = PackageKitGlib.Client()
-        # FIXME: If you refresh repos then immediately try to resolve pkgs the first
-        #        pkg will fail to resolve
-        #self.pkit_update()
+        self.pkit_update()
 
         # init dbus conn to our authorizer service
         try:
