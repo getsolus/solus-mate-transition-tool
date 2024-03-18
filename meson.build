@@ -1,7 +1,7 @@
 project(
     'solus-mate-transition-tool',
     ['c'],
-    version: '0.2',
+    version: '0.3.1',
     license: [
         'GPL-2.0-only',
     ],
