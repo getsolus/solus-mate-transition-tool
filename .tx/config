@@ -1,0 +1,12 @@
+[main]
+host = https://app.transifex.com
+
+[o:solus:p:solus-mate-transition-tool:r:solus-mate-transition-toolpot]
+file_filter            = po/<lang>.po
+source_file            = po/solus-mate-transition-tool.pot
+source_lang            = en
+type                   = PO
+minimum_perc           = 46
+replace_edited_strings = false
+keep_translations      = false
+
