@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import time
+import gettext
 
 import gi.repository
 
@@ -17,6 +18,8 @@ UPDATE_NOTIF_TIMEOUT = 20000
 UPDATE_DELTA_HOUR = 60 * 60
 UPDATE_DELTA_FOURHOURLY = UPDATE_DELTA_HOUR * 4
 PONG_FREQUENCY = 120
+
+_ = gettext.gettext
 
 class MateNotificationApp(Gio.Application):
     def __init__(self):
@@ -44,9 +47,9 @@ class MateNotificationApp(Gio.Application):
     def show_notification(self):
         """ Actually show the notification """
         self.store_update_time()
-        self.notification = Notify.Notification.new("Solus Transition Service", "Solus MATE Edition is no longer supported. The MATE desktop environment will not be recieving new updates.", "software-update-urgent")
+        self.notification = Notify.Notification.new(_("Solus Transition Service"), _("Solus MATE Edition is no longer supported. The MATE desktop environment will not be recieving new updates."), "software-update-urgent")
         self.notification.set_timeout(UPDATE_NOTIF_TIMEOUT)
-        self.notification.add_action("open-matetransition-tool", "Switch Solus Edition",
+        self.notification.add_action("open-matetransition-tool", _("Switch Solus Edition"),
                                      self.action_open_tool, None)
         self.notification.show()
 
