@@ -4,6 +4,7 @@ from configparser import ConfigParser
 import os
 import subprocess
 import sys
+import gettext
 
 import gi
 gi.require_version('Gdk', '3.0')
@@ -22,6 +23,8 @@ LIGHTDM_CONF_DIR = "/etc/lightdm/lightdm.conf.d/"
 LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+_ = gettext.gettext
 
 class App():
 
@@ -83,7 +86,7 @@ class App():
 
     def state_enable_remove(self) -> None:
         self.builder.get_object("remove_mate").set_sensitive(True)
-        self.builder.get_object("remove_mate").set_tooltip_text("Uninstall MATE to complete transition")
+        self.builder.get_object("remove_mate").set_tooltip_text(_("Uninstall MATE to complete transition"))
 
     def state_disable_install(self) -> None:
         self.builder.get_object("install_budgie").set_sensitive(False)
@@ -97,7 +100,7 @@ class App():
         # No lockfile exists so we want to be using the MATE session
         if exists == False and self.get_desktop_type() != self.mate_desktop_session:
             self.state_disable_install()
-            self.on_error_dialog("Error", "Logout and login to the MATE session first to continue")
+            self.on_error_dialog(_("Error", "Logout and login to the MATE session first to continue"))
 
         # Lockfile exists so ensure the current DE session matches the lockfile
         if exists is True and de is not None:
@@ -106,8 +109,8 @@ class App():
             if self.get_desktop_type().casefold() == desktop_session.casefold():
                 self.state_enable_remove()
             else:
-                self.on_error_dialog("Error",
-                                     f"{pretty_name} is installed but you are not logged into that desktop environment.\nLogout and login to the {pretty_name} session to continue.")
+                self.on_error_dialog(_("Error"),
+                                     _("{} is installed but you are not logged into that desktop environment.\nLogout and login to the {} session to continue.").format(pretty_name,pretty_name))
 
 
     def on_success_reboot_dialog(self, de: str, logo: str) -> None:
@@ -115,16 +118,16 @@ class App():
             flags=0,
             message_type=Gtk.MessageType.QUESTION,
             buttons=Gtk.ButtonsType.OK,
-            text=f"Successfully Installed {de}",
+            text=_("Successfully Installed {}").format(de),
         )
-        reboot_btn = dialog.add_button("Reboot", Gtk.ResponseType.ACCEPT)
+        reboot_btn = dialog.add_button(_("Reboot"), Gtk.ResponseType.ACCEPT)
         # TODO: Set reboot color to a nice red
         #reboot_btn.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("red"))
         # set image to object-rotate-right
-        dialog.format_secondary_text(
+        dialog.format_secondary_text(_(
             "Reboot now to login to your new desktop environment automatically. \n\n"
             "This program will then auto-start to prompt you to remove MATE."
-        )
+        ))
 
         deimg = Gtk.Image()
         deimg.set_from_icon_name(logo, size = Gtk.IconSize.DIALOG)
@@ -143,11 +146,11 @@ class App():
             flags=0,
             message_type=Gtk.MessageType.INFO,
             buttons=Gtk.ButtonsType.CLOSE,
-            text=f"Successfully Completed Transition to {de}",
+            text=_("Successfully Completed Transition to {}").format(de),
         )
-        dialog.format_secondary_text(
+        dialog.format_secondary_text(_(
             "We hope you enjoy using your new desktop environment."
-        )
+        ))
 
         deimg = Gtk.Image()
         deimg.set_from_icon_name("distributor-logo-solus", size = Gtk.IconSize.DIALOG)
@@ -173,7 +176,7 @@ class App():
 
     def finished(self):
         self.progress.set_fraction(100.0)
-        self.progress.set_text("Finished")
+        self.progress.set_text(_("Finished"))
 
     def write_temporary_config_files(self, ref: str) -> None:
         try:
@@ -186,7 +189,7 @@ class App():
                 # The user knows this already; don't show a FatalErrorWindow.
                 sys.exit(1)
             else:
-                self.on_error_dialog("Failed to write temporary config file", e)
+                self.on_error_dialog(_("Failed to write temporary config file"), e)
 
     def remove_temporary_config_files(self) -> None:
         try:
@@ -200,19 +203,19 @@ class App():
                 # The user knows this already; don't show a FatalErrorWindow.
                 sys.exit(1)
             else:
-                self.on_error_dialog("Failed to remove temporary config file", e)
+                self.on_error_dialog(_("Failed to remove temporary config file"), e)
 
     def on_pkit_progress(self, progress, ptype, data=None):
         if progress.get_status() == PackageKitGlib.StatusEnum.DOWNLOAD:
-            self.progress.set_text("Downloading...")
+            self.progress.set_text(_("Downloading..."))
         elif progress.get_status() == PackageKitGlib.StatusEnum.INSTALL:
-            self.progress.set_text("Installing...")
+            self.progress.set_text(_("Installing..."))
         elif progress.get_status() == PackageKitGlib.StatusEnum.REMOVE:
-            self.progress.set_text("Removing...")
+            self.progress.set_text(_("Removing..."))
         elif progress.get_status() == PackageKitGlib.StatusEnum.CANCEL:
-            self.progress.set_text("Cancelling...")
+            self.progress.set_text(_("Cancelling..."))
         elif progress.get_status() == PackageKitGlib.StatusEnum.LOADING_CACHE:
-            self.progress.set_text("Loading cache...")
+            self.progress.set_text(_("Loading cache..."))
         else:
             self.progress.set_text("")
         if ptype == PackageKitGlib.ProgressType.PERCENTAGE:
@@ -220,17 +223,17 @@ class App():
             self.progress.set_fraction(prog_value / 100.0)
 
     def on_refresh_finished(self, source, result, data=None):
-        print("Pkit refreshed cache")
-        self.progress.set_text("Cache updated")
+        print(_("Packagekit refreshed cache"))
+        self.progress.set_text(_("Cache updated"))
 
     def on_pkit_finished(self, source, result, data=None):
         self.finished()
-        print("Pkit update finished")
+        print(_("Packagekit update finished"))
         try:
             results = source.generic_finish(result)
         except Exception as e:
-            self.progress.set_text(f"Error: {e}")
-            print("Pkit update error:", e)
+            self.progress.set_text(_("Error: {}").format(e))
+            print(_("Packagekit update error:"), e)
             # Reset button states on err
             # FIXME, handle state more generically!
             if data == self.mate_id:
@@ -257,7 +260,7 @@ class App():
             self.on_success_complete_dialog(de=pretty_name)
 
     def pk_resolve_pkgs_async(self, pkgs: list, only_installed: bool, ref: str) -> None:
-        print("Pkit resolve")
+        print(_("Packagekit resolve"))
 
         def on_resolve_async(source, result, data=None) -> bool:
             results = source.generic_finish(result)
@@ -271,14 +274,14 @@ class App():
                 name = i.get_id()
                 is_installed = i.get_info() & PackageKitGlib.InfoEnum.INSTALLED == 1
                 not_installed = i.get_info() & PackageKitGlib.InfoEnum.INSTALLED == 0
-                print("is_installed", is_installed, name)
+                print(_("is installed"), is_installed, name)
                 # FIXME: make this not shit
                 if data == self.mate_id and not_installed is True:
-                    print("Skipping {}".format(name))
+                    print(_("Skipping {}").format(name))
                 elif data == self.xfce_id and is_installed is True:
-                    print("Skipping {}".format(name))
+                    print(_("Skipping {}").format(name))
                 elif data == self.budgie_id and is_installed is True:
-                    print("Skipping {}".format(name))
+                    print(_("Skipping {}").format(name))
                 else:
                     pkgs.append(name)
 
@@ -302,7 +305,7 @@ class App():
 
     def pkit_update(self):
         """Refresh packagekit repos"""
-        print("Pkit update")
+        print(_("Packagekit update"))
         self.pkit_cancellable = Gio.Cancellable()
         self.client.refresh_cache_async(True, # transaction flags (filters, etc.)
                                         self.pkit_cancellable, # cancellable
@@ -314,7 +317,7 @@ class App():
 
     def pkit_install_async(self, pkg_ids: list, ref: str) -> None:
         """Install packages with resolved pkg ids asynchronously"""
-        print("Pkit install")
+        print(_("Packagekit install"))
         self.pkit_cancellable = Gio.Cancellable()
         print(pkg_ids)
         if len(pkg_ids) > 0:
@@ -330,7 +333,7 @@ class App():
 
     def pkit_remove_async(self, pkg_ids: list, ref: str) -> None:
         """Remove packages with resolved pkg ids asynchronously"""
-        print("Pkit remove")
+        print(_("Packagekit remove"))
         self.pkit_cancellable = Gio.Cancellable()
         if len(pkg_ids) > 0:
             print(pkg_ids)
@@ -347,7 +350,7 @@ class App():
 
     def pkit_cancel(self, button) -> None:
         """Cancel packagekit operation if supported"""
-        print("Pkit cancel")
+        print(_("Packagekit cancel"))
         if self.pkit_cancellable is not None:
             self.pkit_cancellable.cancel()
 
@@ -355,7 +358,7 @@ class App():
         desktop = os.environ.get("XDG_SESSION_DESKTOP")
         print(desktop)
         if desktop is None:
-            print("Warning: XDG_SESSION_DESKTOP is unset!")
+            print(_("Warning: XDG_SESSION_DESKTOP is unset!"))
             return ""
         return desktop
 
@@ -392,11 +395,11 @@ class App():
             print(contents)
         except IOError as e:
             self.progress.set_text("Error: {}".format(e))
-            print("Error Failed to read {}, error:", path, e)
+            print(_("Error Failed to read {}, error:"), path, e)
 
         if len(contents) == 0:
             self.progress.set_text("Error: no packages found in {}".format(path))
-            print("Error: No packages found in {}", path)
+            print(_("Error: No packages found in {}"), path)
 
         return contents
 
@@ -450,7 +453,7 @@ class App():
     def _remove_lockfile(self) -> None:
         if os.path.exists(LOCKFILE):
             os.remove(LOCKFILE)
-            print("Removed {}".format(LOCKFILE))
+            print(_("Removed {}").format(LOCKFILE))
 
     def _remove_transition_tool(self) -> None:
         """ Uninstall ourselves after successfully completing """
@@ -471,7 +474,7 @@ class App():
             if len(package_ids) > 0:
                 self.pkit_remove_async(pkgs, None)
             else:
-                self.progress.set_text("Error: Couldn't resolve ourself with packagekit")
+                self.progress.set_text(_("Error: Couldn't resolve ourself with packagekit"))
 
         self.pkit_cancellable = Gio.Cancellable()
         self.client.resolve_async(PackageKitGlib.FilterEnum.from_string("INSTALLED"), # filters
