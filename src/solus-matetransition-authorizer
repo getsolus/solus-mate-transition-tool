@@ -2,6 +2,7 @@
 
 from configparser import ConfigParser
 import os
+import pathlib
 import sys
 import warnings
 
@@ -62,7 +63,7 @@ class Authorizer(dbus.service.Object):
             return sender
 
         def reply_cb(result):
-            os.makedirs(os.path.dirname(DESKTOP_AUTOSTART_DIR), exist_ok=True)
+            pathlib.Path(DESKTOP_AUTOSTART_DIR).mkdir(parents=True, exist_ok=True)
             config = ConfigParser()
             config.optionxform = str
             config.read(desktop_path)
