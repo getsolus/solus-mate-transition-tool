@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the solus-mate-transition-tool package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Daniel Alferink, 2024
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: solus-mate-transition-tool 0.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-25 18:48-0500\n"
+"PO-Revision-Date: 2024-03-22 23:52+0000\n"
+"Last-Translator: Daniel Alferink, 2024\n"
+"Language-Team: Dutch (Netherlands) (https://app.transifex.com/solus/teams/188714/nl_NL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:123
+msgid "Reboot"
+msgstr "Opnieuw opstarten"
+
+#: src/solus-mate-transition.ui.h:2
+msgid "{DE} Successfully installed, please reboot to continue."
+msgstr ""
+"{DE} Installatie succesvol, start computer opnieuw op om door te gaan."
+
+#: src/solus-mate-transition.ui.h:3
+msgid "Solus MATE Transition Tool"
+msgstr "Solus MATE Transitiehulpmiddel"
+
+#: src/solus-mate-transition.ui.h:4
+msgid ""
+"As of Solus 4.5 the MATE Desktop Enivornment is no longer\n"
+"being maintained. This tool will uninstall the MATE desktop\n"
+"environment and install Budgie or XFCE in its place."
+msgstr ""
+"Vanaf Solus 4.5 is de MATE gebruikersomgeving niet langer ondersteund. Dit "
+"hulpmiddel vervangt de MATE gebruikersomgeving met Budgie of XFCE."
+
+#: src/solus-mate-transition.ui.h:7
+msgid "Ensure any important work is backed up before continuing"
+msgstr "Zorg ervoor een back-up te maken van al uw belangrijke documenten."
+
+#: src/solus-mate-transition.ui.h:8
+msgid " Remove MATE"
+msgstr "Verwijder MATE"
+
+#: src/solus-mate-transition.ui.h:9
+msgid "Cannot uninstall MATE without XFCE being installed first."
+msgstr "MATE kan niet worden verwijderd voordat XFCE geïnstalleerd is."
+
+#: src/solus-mate-transition.ui.h:10
+msgid " Install XFCE"
+msgstr "Installeer XFCE"
+
+#: src/solus-mate-transition.ui.h:11
+msgid "Choose the XFCE desktop environment to replace MATE."
+msgstr "Kies de XFCE gebruikersomgeving om MATE te vervangen."
+
+#: src/solus-mate-transition.ui.h:12
+msgid "Install Budgie"
+msgstr "Installeer Budgie"
+
+#: src/solus-mate-transition.ui.h:13
+msgid "Choose the Budgie desktop environment to replace MATE."
+msgstr "Kies de Budgie gebruikersomgeving om MATE te vervangen."
+
+#: src/solus-mate-transition.ui.h:14
+msgid "Step 1. Choose"
+msgstr "Stap 1. Kies"
+
+#: src/solus-mate-transition.ui.h:15
+msgid "Step 2. Cleanup"
+msgstr "Stap 2. Opruimen"
+
+#: src/solus-mate-transition.ui.h:16
+msgid " Progress"
+msgstr "Status"
+
+#: src/solus-mate-transition-notification.py:50
+msgid "Solus Transition Service"
+msgstr "Solus Transitie Service"
+
+#: src/solus-mate-transition-notification.py:50
+msgid ""
+"Solus MATE Edition is no longer supported. The MATE desktop environment will"
+" not be recieving new updates."
+msgstr ""
+"Solus MATE Editie is niet meer ondersteund. De MATE gebruikersomgeving "
+"ontvangt geen nieuwe updates."
+
+#: src/solus-mate-transition-notification.py:52
+msgid "Switch Solus Edition"
+msgstr "Gebruik Solus Editie"
+
+#: src/solus-mate-transition-tool.py:89
+msgid "Uninstall MATE to complete transition"
+msgstr "Verwijder MATE om de transitie te voltooien"
+
+#: src/solus-mate-transition-tool.py:103 src/solus-mate-transition-tool.py:112
+msgid "Error"
+msgstr "Fout"
+
+#: src/solus-mate-transition-tool.py:113
+msgid ""
+"{} is installed but you are not logged into that desktop environment.\n"
+"Logout and login to the {} session to continue."
+msgstr ""
+"{} is geïnstalleerd, maar u bent daar nog niet ingelogd.\n"
+"Om door te gaan, log eerst uit om vervolgens in te loggen op {}."
+
+#: src/solus-mate-transition-tool.py:121
+msgid "Successfully Installed {}"
+msgstr "{} Succesvol Geïnstalleerd"
+
+#: src/solus-mate-transition-tool.py:128
+msgid ""
+"Reboot now to login to your new desktop environment automatically. \n"
+"\n"
+"This program will then auto-start to prompt you to remove MATE."
+msgstr ""
+"Start opnieuw op om automatisch in uw nieuwe gebruikersomgeving ingelogd te worden.\n"
+"\n"
+"Dit programma zal vervolgens vragen om MATE te verwijderen."
+
+#: src/solus-mate-transition-tool.py:149
+msgid "Successfully Completed Transition to {}"
+msgstr "Transitie naar {} Succesvol Voltooid"
+
+#: src/solus-mate-transition-tool.py:152
+msgid "We hope you enjoy using your new desktop environment."
+msgstr "Wij wensen u veel plezier met uw nieuwe gebruikersomgeving."
+
+#: src/solus-mate-transition-tool.py:179
+msgid "Finished"
+msgstr "Voltooid"
+
+#: src/solus-mate-transition-tool.py:192
+msgid "Failed to write temporary config file"
+msgstr "Schrijven van tijdelijk configuratiebestand mislukt"
+
+#: src/solus-mate-transition-tool.py:206
+msgid "Failed to remove temporary config file"
+msgstr "Verwijderen van tijdelijk configuratiebestand mislukt"
+
+#: src/solus-mate-transition-tool.py:210
+msgid "Downloading..."
+msgstr "Downloaden..."
+
+#: src/solus-mate-transition-tool.py:212
+msgid "Installing..."
+msgstr "Installeren..."
+
+#: src/solus-mate-transition-tool.py:214
+msgid "Removing..."
+msgstr "Verwijderen..."
+
+#: src/solus-mate-transition-tool.py:216
+msgid "Cancelling..."
+msgstr "Annuleren..."
+
+#: src/solus-mate-transition-tool.py:218
+msgid "Loading cache..."
+msgstr "Cachebestand laden..."
+
+#: src/solus-mate-transition-tool.py:226
+msgid "Packagekit refreshed cache"
+msgstr "Packagekit vernieuwd cachebestand"
+
+#: src/solus-mate-transition-tool.py:227
+msgid "Cache updated"
+msgstr "Cachebestand bijgewerkt"
+
+#: src/solus-mate-transition-tool.py:231
+msgid "Packagekit update finished"
+msgstr "Packagekit update voltooid"
+
+#: src/solus-mate-transition-tool.py:235
+msgid "Error: {}"
+msgstr "Fout: {}"
+
+#: src/solus-mate-transition-tool.py:236
+msgid "Packagekit update error:"
+msgstr "Packagekit update fout:"
+
+#: src/solus-mate-transition-tool.py:263
+msgid "Packagekit resolve"
+msgstr "Packagekit oplossen"
+
+#: src/solus-mate-transition-tool.py:277
+msgid "is installed"
+msgstr "is geïnstalleerd"
+
+#: src/solus-mate-transition-tool.py:280 src/solus-mate-transition-tool.py:282
+#: src/solus-mate-transition-tool.py:284
+msgid "Skipping {}"
+msgstr "{} overslaan"
+
+#: src/solus-mate-transition-tool.py:308
+msgid "Packagekit update"
+msgstr "Update Packagekit"
+
+#: src/solus-mate-transition-tool.py:320
+msgid "Packagekit install"
+msgstr "Installeer Packagekit"
+
+#: src/solus-mate-transition-tool.py:336
+msgid "Packagekit remove"
+msgstr "Verwijder Packagekit"
+
+#: src/solus-mate-transition-tool.py:353
+msgid "Packagekit cancel"
+msgstr "Annuleer Packagekit"
+
+#: src/solus-mate-transition-tool.py:361
+msgid "Warning: XDG_SESSION_DESKTOP is unset!"
+msgstr "Waarschuwing: XDG_SESSION_DESKTOP is uitgeschakeld!"
+
+#: src/solus-mate-transition-tool.py:398
+msgid "Error Failed to read {}, error:"
+msgstr "Fout: Mislukt {} te lezen, fout:"
+
+#: src/solus-mate-transition-tool.py:402
+msgid "Error: No packages found in {}"
+msgstr "Fout: Geen pakketten gevonden in {}"
+
+#: src/solus-mate-transition-tool.py:456
+msgid "Removed {}"
+msgstr "{} verwijderd"
+
+#: src/solus-mate-transition-tool.py:477
+msgid "Error: Couldn't resolve ourself with packagekit"
+msgstr "Fout: Niet kunnen oplossen met packagekit"

@@ -1,0 +1,237 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the solus-mate-transition-tool package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Yoni Banai, 2024
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: solus-mate-transition-tool 0.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-25 18:48-0500\n"
+"PO-Revision-Date: 2024-03-22 23:52+0000\n"
+"Last-Translator: Yoni Banai, 2024\n"
+"Language-Team: Hebrew (Israel) (https://app.transifex.com/solus/teams/188714/he_IL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: he_IL\n"
+"Plural-Forms: nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;\n"
+
+#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:123
+msgid "Reboot"
+msgstr "הפעלה מחדש"
+
+#: src/solus-mate-transition.ui.h:2
+msgid "{DE} Successfully installed, please reboot to continue."
+msgstr "{DE} ההתקנה הסתיימה בהצלחה, אנא בצעו הפעלה מחדש כדי להמשיך."
+
+#: src/solus-mate-transition.ui.h:3
+msgid "Solus MATE Transition Tool"
+msgstr "כלי מעבר מ Solus MATE"
+
+#: src/solus-mate-transition.ui.h:4
+msgid ""
+"As of Solus 4.5 the MATE Desktop Enivornment is no longer\n"
+"being maintained. This tool will uninstall the MATE desktop\n"
+"environment and install Budgie or XFCE in its place."
+msgstr ""
+"החל מגרסה 4.5 של Solus, התחזוקה של סביבת שולחן העבודה MATE תיפסק. כלי זה "
+"יסיר את סביבת שולחן העבודה MATE ויתקין במקומה את Budgie או XFCE."
+
+#: src/solus-mate-transition.ui.h:7
+msgid "Ensure any important work is backed up before continuing"
+msgstr "לפני שממשיכים, וודאו שגיביתם עבודה או מסמכים חשובים"
+
+#: src/solus-mate-transition.ui.h:8
+msgid " Remove MATE"
+msgstr "הסר את MATE"
+
+#: src/solus-mate-transition.ui.h:9
+msgid "Cannot uninstall MATE without XFCE being installed first."
+msgstr "אין אפשרות להסיר את MATE ללא התקנה מראש של XFCE."
+
+#: src/solus-mate-transition.ui.h:10
+msgid " Install XFCE"
+msgstr "התקן את XFCE"
+
+#: src/solus-mate-transition.ui.h:11
+msgid "Choose the XFCE desktop environment to replace MATE."
+msgstr "בחרו את סביבת שולחן העבודה XFCE כתחליף ל MATE."
+
+#: src/solus-mate-transition.ui.h:12
+msgid "Install Budgie"
+msgstr "התקן את Budgie"
+
+#: src/solus-mate-transition.ui.h:13
+msgid "Choose the Budgie desktop environment to replace MATE."
+msgstr "בחרו את סביבת שולחן העבודה Budgie כתחליף ל MATE."
+
+#: src/solus-mate-transition.ui.h:14
+msgid "Step 1. Choose"
+msgstr "שלב 1. בחירה"
+
+#: src/solus-mate-transition.ui.h:15
+msgid "Step 2. Cleanup"
+msgstr "שלב 2. ניקוי"
+
+#: src/solus-mate-transition.ui.h:16
+msgid " Progress"
+msgstr "התקדמות"
+
+#: src/solus-mate-transition-notification.py:50
+msgid "Solus Transition Service"
+msgstr "שירות מעבר Solus"
+
+#: src/solus-mate-transition-notification.py:50
+msgid ""
+"Solus MATE Edition is no longer supported. The MATE desktop environment will"
+" not be recieving new updates."
+msgstr ""
+"התמיכה במהדורת MATE של Solus הופסקה.  לא יהיו יותר עדכונים לסביבת שולחן "
+"העבודה MATE."
+
+#: src/solus-mate-transition-notification.py:52
+msgid "Switch Solus Edition"
+msgstr "החלף מהדורת Solus"
+
+#: src/solus-mate-transition-tool.py:89
+msgid "Uninstall MATE to complete transition"
+msgstr "הסירו את MATE כדי להשלים את המעבר"
+
+#: src/solus-mate-transition-tool.py:103 src/solus-mate-transition-tool.py:112
+msgid "Error"
+msgstr "שגיאה"
+
+#: src/solus-mate-transition-tool.py:113
+msgid ""
+"{} is installed but you are not logged into that desktop environment.\n"
+"Logout and login to the {} session to continue."
+msgstr ""
+"{} מותקנת אך אתם לא מחוברים לסביבת שולחן העבודה הזו.\n"
+"צאו והיכנסו מחדש ל{} כדי להמשיך."
+
+#: src/solus-mate-transition-tool.py:121
+msgid "Successfully Installed {}"
+msgstr "{} הותקנה בהצלחה"
+
+#: src/solus-mate-transition-tool.py:128
+msgid ""
+"Reboot now to login to your new desktop environment automatically. \n"
+"\n"
+"This program will then auto-start to prompt you to remove MATE."
+msgstr ""
+"בצעו הפעלה מחדש עכשיו כדי להיכנס לסביבת שולחן העבודה החדשה שלכם באופן אוטומטי.\n"
+"תוכנה זו אז תתחיל עצמה מחדש כדי להסיר את MATE."
+
+#: src/solus-mate-transition-tool.py:149
+msgid "Successfully Completed Transition to {}"
+msgstr "מעבר ל{} הושלם בהצלחה"
+
+#: src/solus-mate-transition-tool.py:152
+msgid "We hope you enjoy using your new desktop environment."
+msgstr "אני מקווים שתהנו מהשימוש בסביבת שולחן העבודה החדשה שלכם."
+
+#: src/solus-mate-transition-tool.py:179
+msgid "Finished"
+msgstr "גמור"
+
+#: src/solus-mate-transition-tool.py:192
+msgid "Failed to write temporary config file"
+msgstr "כתיבת קובץ הגדרות זמני נכשלה"
+
+#: src/solus-mate-transition-tool.py:206
+msgid "Failed to remove temporary config file"
+msgstr "מחיקת קובץ הגדרות זמני נכשלה"
+
+#: src/solus-mate-transition-tool.py:210
+msgid "Downloading..."
+msgstr "מוריד..."
+
+#: src/solus-mate-transition-tool.py:212
+msgid "Installing..."
+msgstr "מתקין..."
+
+#: src/solus-mate-transition-tool.py:214
+msgid "Removing..."
+msgstr "מסיר..."
+
+#: src/solus-mate-transition-tool.py:216
+msgid "Cancelling..."
+msgstr "מבטל..."
+
+#: src/solus-mate-transition-tool.py:218
+msgid "Loading cache..."
+msgstr "טוען מטמון..."
+
+#: src/solus-mate-transition-tool.py:226
+msgid "Packagekit refreshed cache"
+msgstr "Packagekit רעננה את המטמון"
+
+#: src/solus-mate-transition-tool.py:227
+msgid "Cache updated"
+msgstr "מטמון עודכן"
+
+#: src/solus-mate-transition-tool.py:231
+msgid "Packagekit update finished"
+msgstr "עדכון Packagekit הושלם"
+
+#: src/solus-mate-transition-tool.py:235
+msgid "Error: {}"
+msgstr "שגיאה: {}"
+
+#: src/solus-mate-transition-tool.py:236
+msgid "Packagekit update error:"
+msgstr "שגיאה בעדכון Packagekit:"
+
+#: src/solus-mate-transition-tool.py:263
+msgid "Packagekit resolve"
+msgstr "Packagekit: פתרון"
+
+#: src/solus-mate-transition-tool.py:277
+msgid "is installed"
+msgstr "מותקן"
+
+#: src/solus-mate-transition-tool.py:280 src/solus-mate-transition-tool.py:282
+#: src/solus-mate-transition-tool.py:284
+msgid "Skipping {}"
+msgstr "מדלג {}"
+
+#: src/solus-mate-transition-tool.py:308
+msgid "Packagekit update"
+msgstr "Packagekit: עדכון"
+
+#: src/solus-mate-transition-tool.py:320
+msgid "Packagekit install"
+msgstr " Packagekit: התקנה"
+
+#: src/solus-mate-transition-tool.py:336
+msgid "Packagekit remove"
+msgstr "Packagekit: הסרה"
+
+#: src/solus-mate-transition-tool.py:353
+msgid "Packagekit cancel"
+msgstr "Packagekit: ביטול"
+
+#: src/solus-mate-transition-tool.py:361
+msgid "Warning: XDG_SESSION_DESKTOP is unset!"
+msgstr "אזהרה: XDG_SESSION_DESKTOP איננו מוגדר!"
+
+#: src/solus-mate-transition-tool.py:398
+msgid "Error Failed to read {}, error:"
+msgstr "שגיאה: קריאת {} נכשלה, שגיאה:"
+
+#: src/solus-mate-transition-tool.py:402
+msgid "Error: No packages found in {}"
+msgstr "שגיאה: לא נמצאו חבילות ב {}"
+
+#: src/solus-mate-transition-tool.py:456
+msgid "Removed {}"
+msgstr "{} הוסר"
+
+#: src/solus-mate-transition-tool.py:477
+msgid "Error: Couldn't resolve ourself with packagekit"
+msgstr "שגיאה: פתרון עצמי של Packagekit לא צלח"
