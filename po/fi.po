@@ -1,0 +1,242 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the solus-mate-transition-tool package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# stalebrim, 2024
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: solus-mate-transition-tool 0.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-25 18:48-0500\n"
+"PO-Revision-Date: 2024-03-22 23:52+0000\n"
+"Last-Translator: stalebrim, 2024\n"
+"Language-Team: Finnish (https://app.transifex.com/solus/teams/188714/fi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:123
+msgid "Reboot"
+msgstr "Käynnistä uudelleen"
+
+#: src/solus-mate-transition.ui.h:2
+msgid "{DE} Successfully installed, please reboot to continue."
+msgstr ""
+"Työpöytä {DE} asennettu onnistuneesti, käynnistä tietokone uudelleen "
+"jatkaaksesi."
+
+#: src/solus-mate-transition.ui.h:3
+msgid "Solus MATE Transition Tool"
+msgstr "Solus MATE siirtymätyökalu"
+
+#: src/solus-mate-transition.ui.h:4
+msgid ""
+"As of Solus 4.5 the MATE Desktop Enivornment is no longer\n"
+"being maintained. This tool will uninstall the MATE desktop\n"
+"environment and install Budgie or XFCE in its place."
+msgstr ""
+"MATE-työpöytäympäristön tuki on päättynyt Solus-versiosta\n"
+"4.5 alkaen. Tämä työkalu korvaa MATE-työpöytäympäristön \n"
+"joko Budgie- tai XFCE-työpöydällä."
+
+#: src/solus-mate-transition.ui.h:7
+msgid "Ensure any important work is backed up before continuing"
+msgstr ""
+"Varmista, että tärkeät tietosi ja työsi on varmuuskopioitu ennen jatkamista"
+
+#: src/solus-mate-transition.ui.h:8
+msgid " Remove MATE"
+msgstr "Poista MATE-työpöytä"
+
+#: src/solus-mate-transition.ui.h:9
+msgid "Cannot uninstall MATE without XFCE being installed first."
+msgstr "XFCE-työpöytä on asennettava ennen MATE-työpöydän poistamista."
+
+#: src/solus-mate-transition.ui.h:10
+msgid " Install XFCE"
+msgstr "Asenna XFCE-työpöytä"
+
+#: src/solus-mate-transition.ui.h:11
+msgid "Choose the XFCE desktop environment to replace MATE."
+msgstr "Korvaa MATE-työpöytä XFCE-työpöydällä."
+
+#: src/solus-mate-transition.ui.h:12
+msgid "Install Budgie"
+msgstr "Asenna Budgie-työpöytä"
+
+#: src/solus-mate-transition.ui.h:13
+msgid "Choose the Budgie desktop environment to replace MATE."
+msgstr "Korvaa MATE-työpöytä Budgie-työpöydällä."
+
+#: src/solus-mate-transition.ui.h:14
+msgid "Step 1. Choose"
+msgstr "Vaihe 1. Valinta"
+
+#: src/solus-mate-transition.ui.h:15
+msgid "Step 2. Cleanup"
+msgstr "Vaihe 2. Siivous"
+
+#: src/solus-mate-transition.ui.h:16
+msgid " Progress"
+msgstr "Edistyminen"
+
+#: src/solus-mate-transition-notification.py:50
+msgid "Solus Transition Service"
+msgstr "Solus siirtymäpalvelu"
+
+#: src/solus-mate-transition-notification.py:50
+msgid ""
+"Solus MATE Edition is no longer supported. The MATE desktop environment will"
+" not be recieving new updates."
+msgstr ""
+"Solus MATE-version tuki on päättynyt. MATE-työpöytäympäristö ei saa enää "
+"uusia päivityksiä."
+
+#: src/solus-mate-transition-notification.py:52
+msgid "Switch Solus Edition"
+msgstr "Vaihda Solus-versiotasi"
+
+#: src/solus-mate-transition-tool.py:89
+msgid "Uninstall MATE to complete transition"
+msgstr "Poista MATE-työpöytäympäristö siirtymän viimeistelemiseksi"
+
+#: src/solus-mate-transition-tool.py:103 src/solus-mate-transition-tool.py:112
+msgid "Error"
+msgstr "Virhe"
+
+#: src/solus-mate-transition-tool.py:113
+msgid ""
+"{} is installed but you are not logged into that desktop environment.\n"
+"Logout and login to the {} session to continue."
+msgstr ""
+"{} on asennettu, mutta et ole kirjautunut kyseiseen työpöytäympäristöön.\n"
+"Kirjaudu ulos ja valitse {}-istunto jatkaaksesi."
+
+#: src/solus-mate-transition-tool.py:121
+msgid "Successfully Installed {}"
+msgstr "{} asennettu onnistuneesti"
+
+#: src/solus-mate-transition-tool.py:128
+msgid ""
+"Reboot now to login to your new desktop environment automatically. \n"
+"\n"
+"This program will then auto-start to prompt you to remove MATE."
+msgstr ""
+"Käynnistä tietokone uudelleen kirjautuaksesi uuteen työpöytäympäristöösi automaattisesti.\n"
+"\n"
+"Tämä työkalu käynnistyy automaattisesti ja pyytää sinua poistamaan vanhan MATE-työpöytäympäristön."
+
+#: src/solus-mate-transition-tool.py:149
+msgid "Successfully Completed Transition to {}"
+msgstr "Siirtymä työpöytään {} suoritettu onnistuneesti"
+
+#: src/solus-mate-transition-tool.py:152
+msgid "We hope you enjoy using your new desktop environment."
+msgstr "Toivottavasti nautit uudesta työpöytäympäristöstäsi."
+
+#: src/solus-mate-transition-tool.py:179
+msgid "Finished"
+msgstr "Valmis"
+
+#: src/solus-mate-transition-tool.py:192
+msgid "Failed to write temporary config file"
+msgstr "Virhe kirjoittaessa tilapäistä määritystiedostoa"
+
+#: src/solus-mate-transition-tool.py:206
+msgid "Failed to remove temporary config file"
+msgstr "Virhe poistaessa tilapäistä määritystiedostoa"
+
+#: src/solus-mate-transition-tool.py:210
+msgid "Downloading..."
+msgstr "Ladataan..."
+
+#: src/solus-mate-transition-tool.py:212
+msgid "Installing..."
+msgstr "Asennetaan..."
+
+#: src/solus-mate-transition-tool.py:214
+msgid "Removing..."
+msgstr "Poistetaan..."
+
+#: src/solus-mate-transition-tool.py:216
+msgid "Cancelling..."
+msgstr "Peruutetaan..."
+
+#: src/solus-mate-transition-tool.py:218
+msgid "Loading cache..."
+msgstr "Ladataan välimuistia..."
+
+#: src/solus-mate-transition-tool.py:226
+msgid "Packagekit refreshed cache"
+msgstr "Packagekit-välimuisti virkistetty"
+
+#: src/solus-mate-transition-tool.py:227
+msgid "Cache updated"
+msgstr "Välimuisti päivitetty"
+
+#: src/solus-mate-transition-tool.py:231
+msgid "Packagekit update finished"
+msgstr "Packagekit-päivitys valmis"
+
+#: src/solus-mate-transition-tool.py:235
+msgid "Error: {}"
+msgstr "Virhe: {}"
+
+#: src/solus-mate-transition-tool.py:236
+msgid "Packagekit update error:"
+msgstr "Virhe Packagekit-päivityksessä:"
+
+#: src/solus-mate-transition-tool.py:263
+msgid "Packagekit resolve"
+msgstr "Packagekit selvitys"
+
+#: src/solus-mate-transition-tool.py:277
+msgid "is installed"
+msgstr "on asennettu"
+
+#: src/solus-mate-transition-tool.py:280 src/solus-mate-transition-tool.py:282
+#: src/solus-mate-transition-tool.py:284
+msgid "Skipping {}"
+msgstr "Hypätään kohteen {} yli"
+
+#: src/solus-mate-transition-tool.py:308
+msgid "Packagekit update"
+msgstr "Packagekit päivitys"
+
+#: src/solus-mate-transition-tool.py:320
+msgid "Packagekit install"
+msgstr "Packagekit asennus"
+
+#: src/solus-mate-transition-tool.py:336
+msgid "Packagekit remove"
+msgstr "Packagekit poisto"
+
+#: src/solus-mate-transition-tool.py:353
+msgid "Packagekit cancel"
+msgstr "Packagekit peruutus"
+
+#: src/solus-mate-transition-tool.py:361
+msgid "Warning: XDG_SESSION_DESKTOP is unset!"
+msgstr "Varoitus: XDG_SESSION_DESKTOP ei asetettu!"
+
+#: src/solus-mate-transition-tool.py:398
+msgid "Error Failed to read {}, error:"
+msgstr "Virhe: Virhe luettaessa kohdetta {}, virhe:"
+
+#: src/solus-mate-transition-tool.py:402
+msgid "Error: No packages found in {}"
+msgstr "Virhe: Ei paketteja kohteessa {}"
+
+#: src/solus-mate-transition-tool.py:456
+msgid "Removed {}"
+msgstr "Poistettu kohde {}"
+
+#: src/solus-mate-transition-tool.py:477
+msgid "Error: Couldn't resolve ourself with packagekit"
+msgstr "Virhe: Virhe Packagekit-selvityksessä"
