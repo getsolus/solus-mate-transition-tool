@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
 from configparser import ConfigParser
+import gettext
+import locale
 import os
 import subprocess
 import sys
-import gettext
 
 import gi
 gi.require_version('Gdk', '3.0')
@@ -24,6 +25,11 @@ LIGHTDM_CONF_FILE = "1_solus-mate-transition-override.conf"
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
+APP = 'solus-mate-transition-tool'
+LOCALE_DIR = "/usr/share/locale"
+locale.bindtextdomain(APP, LOCALE_DIR)
+gettext.bindtextdomain(APP, LOCALE_DIR)
+gettext.textdomain(APP)
 _ = gettext.gettext
 
 class App():
@@ -35,6 +41,7 @@ class App():
     def __init__(self):
 
         self.builder = Gtk.Builder()
+        self.builder.set_translation_domain(APP)
         if os.path.exists(os.path.join(CURRENT_DIR, "solus-mate-transition.ui")):
             ui_filename = os.path.join(CURRENT_DIR, "solus-mate-transition.ui")
         else:
@@ -100,7 +107,8 @@ class App():
         # No lockfile exists so we want to be using the MATE session
         if exists == False and self.get_desktop_type() != self.mate_desktop_session:
             self.state_disable_install()
-            self.on_error_dialog(_("Error"), _("Logout and login to the MATE session first to continue"))
+            self.on_error_dialog(_("Error"),
+                                 _("Logout and login to the MATE session first to continue"))
 
         # Lockfile exists so ensure the current DE session matches the lockfile
         if exists is True and de is not None:

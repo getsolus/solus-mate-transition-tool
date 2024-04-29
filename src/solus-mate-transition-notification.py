@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
+import gettext
+import locale
 import os
 import subprocess
 import sys
 import time
-import gettext
 
 import gi.repository
-
 gi.require_version('Gio', '2.0')
 gi.require_version('Notify', '0.7')
 
@@ -19,6 +19,11 @@ UPDATE_DELTA_HOUR = 60 * 60
 UPDATE_DELTA_FOURHOURLY = UPDATE_DELTA_HOUR * 4
 PONG_FREQUENCY = 120
 
+APP = 'solus-mate-transition-tool'
+LOCALE_DIR = "/usr/share/locale"
+locale.bindtextdomain(APP, LOCALE_DIR)
+gettext.bindtextdomain(APP, LOCALE_DIR)
+gettext.textdomain(APP)
 _ = gettext.gettext
 
 class MateNotificationApp(Gio.Application):
