@@ -100,7 +100,7 @@ class App():
         # No lockfile exists so we want to be using the MATE session
         if exists == False and self.get_desktop_type() != self.mate_desktop_session:
             self.state_disable_install()
-            self.on_error_dialog(_("Error", "Logout and login to the MATE session first to continue"))
+            self.on_error_dialog(_("Error"), _("Logout and login to the MATE session first to continue"))
 
         # Lockfile exists so ensure the current DE session matches the lockfile
         if exists is True and de is not None:
