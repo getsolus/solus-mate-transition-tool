@@ -23,10 +23,14 @@ path_dbussystemservicesdir = join_paths(path_datadir, 'dbus-1', 'system-services
 path_desktopdir = join_paths(path_datadir, 'applications')
 path_autostartdesktopdir = join_paths(path_datadir, 'xdg', 'autostart')
 
+localedir = join_paths(path_prefix, get_option('localedir'))
+podir = join_paths(meson.source_root(), 'po')
+
 path_generaldir = join_paths(path_datadir, 'solus-mate-transition-tool')
 
 subdir('data')
 subdir('pkgs')
+subdir('po')
 subdir('src')
 
 report = [
@@ -40,6 +44,7 @@ report = [
     '    dbus system services dir:               @0@'.format(path_dbussystemservicesdir),
     '    desktop dir:                            @0@'.format(path_desktopdir),
     '    autostart desktop dir:                  @0@'.format(path_autostartdesktopdir),
+    '    localedir:                              @0@'.format(localedir),
     '    general dir:                            @0@'.format(path_generaldir),
 ]
 
