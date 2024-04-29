@@ -236,7 +236,9 @@ class App():
 
     def on_pkit_finished(self, source, result, data=None):
         self.finished()
-        print(_("Packagekit update finished"))
+        # FIXME: why does this happen with only this string??
+        # UnboundLocalError: cannot access local variable '_' where it is not associated with a value
+        #print(_("Packagekit update finished"))
         try:
             results = source.generic_finish(result)
         except Exception as e:
