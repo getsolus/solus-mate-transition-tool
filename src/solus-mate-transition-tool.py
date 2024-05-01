@@ -76,7 +76,9 @@ class App():
         self.xfce_desktop_session = "xfce"
         self.xfce_logo = "xfce4-logo"
 
-        self.startup_checks()
+        if self.startup_checks() is False:
+            self.window.close()
+            return
 
         self.client = PackageKitGlib.Client()
         self.pkit_update()
@@ -101,7 +103,7 @@ class App():
         self.builder.get_object("install_xfce").set_sensitive(False)
         self.builder.get_object("install_xfce").set_tooltip_text("")
 
-    def startup_checks(self) -> None:
+    def startup_checks(self) -> bool:
         exists, de, pretty_name, desktop_session = self.read_lockfile()
 
         # No lockfile exists so we want to be using the MATE session
@@ -109,6 +111,7 @@ class App():
             self.state_disable_install()
             self.on_error_dialog(_("Error"),
                                  _("Logout and login to the MATE session first to continue"))
+            return False
 
         # Lockfile exists so ensure the current DE session matches the lockfile
         if exists is True and de is not None:
@@ -119,7 +122,10 @@ class App():
             else:
                 self.on_error_dialog(_("Error"),
                                      _("{} is installed but you are not logged into that desktop environment.\nLogout and login to the {} session to continue.").format(pretty_name,pretty_name))
+                self.window.close()
+                return False
 
+        return True
 
     def on_success_reboot_dialog(self, de: str, logo: str) -> None:
         dialog = Gtk.MessageDialog(
