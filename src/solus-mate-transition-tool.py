@@ -202,7 +202,7 @@ class App():
                 # The user knows this already; don't show a FatalErrorWindow.
                 sys.exit(1)
             else:
-                self.on_error_dialog(_("Failed to write temporary config file"), e)
+                self.on_error_dialog(_("Failed to write temporary config file"), str(e))
 
     def remove_temporary_config_files(self) -> None:
         try:
@@ -216,7 +216,7 @@ class App():
                 # The user knows this already; don't show a FatalErrorWindow.
                 sys.exit(1)
             else:
-                self.on_error_dialog(_("Failed to remove temporary config file"), e)
+                self.on_error_dialog(_("Failed to remove temporary config file"), str(e))
 
     def on_pkit_progress(self, progress, ptype, data=None):
         if progress.get_status() == PackageKitGlib.StatusEnum.DOWNLOAD:
