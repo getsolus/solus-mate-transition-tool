@@ -122,7 +122,6 @@ class App():
             else:
                 self.on_error_dialog(_("Error"),
                                      _("{} is installed but you are not logged into that desktop environment.\nLogout and login to the {} session to continue.").format(pretty_name,pretty_name))
-                self.window.close()
                 return False
 
         return True
