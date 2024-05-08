@@ -34,14 +34,8 @@ msgid "Solus MATE Transition Tool"
 msgstr "أداة الانتقال Solus MATE"
 
 #: src/solus-mate-transition.ui.h:4
-msgid ""
-"As of Solus 4.5 the MATE Desktop Enivornment is no longer\n"
-"being maintained. This tool will uninstall the MATE desktop\n"
-"environment and install Budgie or XFCE in its place."
-msgstr ""
-"اعتبارًا من Solus 4.5، لم تعد بيئة سطح مكتب MATE موجودةً\n"
-"يجري الحفاظ عليها. ستقوم هذه الأداة بإلغاء تثبيت بيئة سطح مكتب MATE\n"
-"وتثبيت Budgie أو XFCE في مكانها."
+msgid "As of Solus 4.5 the MATE Desktop Enivornment is no longer being maintained. This tool will uninstall the MATE desktop environment and install Budgie or XFCE in its place."
+msgstr "اعتبارًا من Solus 4.5، لم تعد بيئة سطح مكتب MATE موجودةًيجري الحفاظ عليها. ستقوم هذه الأداة بإلغاء تثبيت بيئة سطح مكتب MATE وتثبيت Budgie أو XFCE في مكانها."
 
 #: src/solus-mate-transition.ui.h:7
 msgid "Ensure any important work is backed up before continuing"
