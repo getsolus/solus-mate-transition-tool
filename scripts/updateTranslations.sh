@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# nerf until later
-#tx pull -af
+tx pull -af
 
 pushd po
     rm LINGUAS
