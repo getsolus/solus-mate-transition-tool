@@ -1,7 +1,4 @@
 baobab
-eog
-evince
-file-roller
 gedit
 gnome-calculator
 gnome-calendar
@@ -11,7 +8,6 @@ gnome-system-monitor
 gnome-terminal
 gnome-themes-extra
 gnome-user-docs
-onboard
 orca
 seahorse
 yelp
@@ -28,3 +24,6 @@ ffmpegthumbnailer
 rhythmbox-alternative-toolbar
 gparted
 xdg-desktop-portal-gtk
+xarchiver
+xreader
+xviewer
