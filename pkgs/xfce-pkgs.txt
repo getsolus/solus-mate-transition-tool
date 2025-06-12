@@ -1,5 +1,4 @@
 exo
-file-roller
 garcon
 libxfce4ui
 libxfce4util
@@ -11,6 +10,7 @@ thunar
 thunar-archive-plugin
 thunar-shares-plugin
 thunar-volman
+xarchiver
 xfburn
 xfce4-appfinder
 xfce4-desktop-branding
@@ -19,6 +19,7 @@ xfce4-panel
 xfce4-panel-profiles
 xfce4-power-manager
 xfce4-pulseaudio-plugin
+xfce4-screensaver
 xfce4-screenshooter
 xfce4-session
 xfce4-settings
