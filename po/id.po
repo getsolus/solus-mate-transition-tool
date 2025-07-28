@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: solus-mate-transition-tool 0.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-25 18:48-0500\n"
+"POT-Creation-Date: 2024-04-30 16:22-0500\n"
 "PO-Revision-Date: 2024-03-22 23:52+0000\n"
 "Last-Translator: Muhammad Alfi Syahrin, 2024\n"
 "Language-Team: Indonesian (https://app.transifex.com/solus/teams/188714/id/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:123
+#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:131
 msgid "Reboot"
 msgstr "Mulai Awal"
 
@@ -35,8 +35,14 @@ msgid "Solus MATE Transition Tool"
 msgstr "Alat Transisi Solus MATE"
 
 #: src/solus-mate-transition.ui.h:4
-msgid "As of Solus 4.5 the MATE Desktop Enivornment is no longer being maintained. This tool will uninstall the MATE desktop environment and install Budgie or XFCE in its place."
-msgstr "Mulai dari Solus 4.5, Lingkungan Layartama MATE sudah tidak dipelihara. Alat ini akan meghapus instalan Lingkungan Layartama MATE dan memasang Budgie atau XFCE sebagai gantinya."
+msgid ""
+"As of Solus 4.5 the MATE Desktop Enivornment is no longer\n"
+"being maintained. This tool will uninstall the MATE desktop\n"
+"environment and install Budgie or XFCE in its place."
+msgstr ""
+"Mulai dari Solus 4.5, Lingkungan Layartama MATE sudah tidak dipelihara. Alat"
+" ini akan meghapus instalan Lingkungan Layartama MATE dan memasang Budgie "
+"atau XFCE sebagai gantinya."
 
 #: src/solus-mate-transition.ui.h:7
 msgid "Ensure any important work is backed up before continuing"
@@ -80,11 +86,11 @@ msgstr "Langkah 2. Pembersihan"
 msgid " Progress"
 msgstr "Perkembangan"
 
-#: src/solus-mate-transition-notification.py:50
+#: src/solus-mate-transition-notification.py:55
 msgid "Solus Transition Service"
 msgstr "Layanan Transisi Solus"
 
-#: src/solus-mate-transition-notification.py:50
+#: src/solus-mate-transition-notification.py:55
 msgid ""
 "Solus MATE Edition is no longer supported. The MATE desktop environment will"
 " not be recieving new updates."
@@ -92,19 +98,23 @@ msgstr ""
 "Solus MATE sudah tidak didukung lagi. Lingkungan layartama MATE tidak akan "
 "menerima pembaharuan lagi."
 
-#: src/solus-mate-transition-notification.py:52
+#: src/solus-mate-transition-notification.py:57
 msgid "Switch Solus Edition"
 msgstr "Ganti Edisi Solus"
 
-#: src/solus-mate-transition-tool.py:89
+#: src/solus-mate-transition-tool.py:96
 msgid "Uninstall MATE to complete transition"
 msgstr "Hapus MATE untuk menyelesaikan transisi"
 
-#: src/solus-mate-transition-tool.py:103 src/solus-mate-transition-tool.py:112
+#: src/solus-mate-transition-tool.py:110 src/solus-mate-transition-tool.py:120
 msgid "Error"
 msgstr "Kesalahan"
 
-#: src/solus-mate-transition-tool.py:113
+#: src/solus-mate-transition-tool.py:111
+msgid "Logout and login to the MATE session first to continue"
+msgstr "Log keluar dan log masuk ke sesi MATE dahulu untuk melanjutkan"
+
+#: src/solus-mate-transition-tool.py:121
 msgid ""
 "{} is installed but you are not logged into that desktop environment.\n"
 "Logout and login to the {} session to continue."
@@ -112,11 +122,11 @@ msgstr ""
 "{} sudah terpasang tapi Anda belum log masuk ke dalam lingkungan layartama tersebut.\n"
 "Log keluar dan log masuk ke dalam sesi {} untuk melanjutkan."
 
-#: src/solus-mate-transition-tool.py:121
+#: src/solus-mate-transition-tool.py:129
 msgid "Successfully Installed {}"
 msgstr "Berhasil memasang {}"
 
-#: src/solus-mate-transition-tool.py:128
+#: src/solus-mate-transition-tool.py:136
 msgid ""
 "Reboot now to login to your new desktop environment automatically. \n"
 "\n"
@@ -126,111 +136,107 @@ msgstr ""
 "\n"
 "Program ini akan mulai otomatis untuk mengingatkan Anda untuk menghapus MATE."
 
-#: src/solus-mate-transition-tool.py:149
+#: src/solus-mate-transition-tool.py:157
 msgid "Successfully Completed Transition to {}"
 msgstr "Berhasil Menyelesaikan Transisi ke {}"
 
-#: src/solus-mate-transition-tool.py:152
+#: src/solus-mate-transition-tool.py:160
 msgid "We hope you enjoy using your new desktop environment."
 msgstr "Kami harap Anda menikmati lingkungan layartama baru Anda."
 
-#: src/solus-mate-transition-tool.py:179
+#: src/solus-mate-transition-tool.py:187
 msgid "Finished"
 msgstr "Selesai"
 
-#: src/solus-mate-transition-tool.py:192
+#: src/solus-mate-transition-tool.py:200
 msgid "Failed to write temporary config file"
 msgstr "Gagal menulis berkas konfigurasi sementara"
 
-#: src/solus-mate-transition-tool.py:206
+#: src/solus-mate-transition-tool.py:214
 msgid "Failed to remove temporary config file"
 msgstr "Gagal menghapus berkas konfigurasi sementara"
 
-#: src/solus-mate-transition-tool.py:210
+#: src/solus-mate-transition-tool.py:218
 msgid "Downloading..."
 msgstr "Sedang mengunduh..."
 
-#: src/solus-mate-transition-tool.py:212
+#: src/solus-mate-transition-tool.py:220
 msgid "Installing..."
 msgstr "Sedang memasang..."
 
-#: src/solus-mate-transition-tool.py:214
+#: src/solus-mate-transition-tool.py:222
 msgid "Removing..."
 msgstr "Sedang mengapus..."
 
-#: src/solus-mate-transition-tool.py:216
+#: src/solus-mate-transition-tool.py:224
 msgid "Cancelling..."
 msgstr "Sedang membatalkan..."
 
-#: src/solus-mate-transition-tool.py:218
+#: src/solus-mate-transition-tool.py:226
 msgid "Loading cache..."
 msgstr "Sedang memuat tembolok..."
 
-#: src/solus-mate-transition-tool.py:226
+#: src/solus-mate-transition-tool.py:234
 msgid "Packagekit refreshed cache"
 msgstr "Tembolok Packagekit disegarkan"
 
-#: src/solus-mate-transition-tool.py:227
+#: src/solus-mate-transition-tool.py:235
 msgid "Cache updated"
 msgstr "Tembolok diperbaharui"
 
-#: src/solus-mate-transition-tool.py:231
-msgid "Packagekit update finished"
-msgstr "Pembaharuan Packagekit telah selesai"
-
-#: src/solus-mate-transition-tool.py:235
+#: src/solus-mate-transition-tool.py:245
 msgid "Error: {}"
 msgstr "Kesalahan: {}"
 
-#: src/solus-mate-transition-tool.py:236
+#: src/solus-mate-transition-tool.py:246
 msgid "Packagekit update error:"
 msgstr "Kesalahan pembaharuan Packagekit:"
 
-#: src/solus-mate-transition-tool.py:263
+#: src/solus-mate-transition-tool.py:273
 msgid "Packagekit resolve"
 msgstr "Resolusi Packagekit"
 
-#: src/solus-mate-transition-tool.py:277
+#: src/solus-mate-transition-tool.py:287
 msgid "is installed"
 msgstr "telah dipasang"
 
-#: src/solus-mate-transition-tool.py:280 src/solus-mate-transition-tool.py:282
-#: src/solus-mate-transition-tool.py:284
+#: src/solus-mate-transition-tool.py:290 src/solus-mate-transition-tool.py:292
+#: src/solus-mate-transition-tool.py:294
 msgid "Skipping {}"
 msgstr "Sedang melewati {}"
 
-#: src/solus-mate-transition-tool.py:308
+#: src/solus-mate-transition-tool.py:318
 msgid "Packagekit update"
 msgstr "Pembaharuan Packagekit"
 
-#: src/solus-mate-transition-tool.py:320
+#: src/solus-mate-transition-tool.py:330
 msgid "Packagekit install"
 msgstr "Pemasangan Packagekit"
 
-#: src/solus-mate-transition-tool.py:336
+#: src/solus-mate-transition-tool.py:346
 msgid "Packagekit remove"
 msgstr "Penghapusan Packagekit"
 
-#: src/solus-mate-transition-tool.py:353
+#: src/solus-mate-transition-tool.py:363
 msgid "Packagekit cancel"
 msgstr "Pembatalan Packagekit"
 
-#: src/solus-mate-transition-tool.py:361
+#: src/solus-mate-transition-tool.py:371
 msgid "Warning: XDG_SESSION_DESKTOP is unset!"
 msgstr "Peringatan: XDG_SESSION_DESKTOP belum ditentukan!"
 
-#: src/solus-mate-transition-tool.py:398
+#: src/solus-mate-transition-tool.py:408
 msgid "Error Failed to read {}, error:"
 msgstr "Kesalahan Gagal membaca {}, kesalahan:"
 
-#: src/solus-mate-transition-tool.py:402
+#: src/solus-mate-transition-tool.py:412
 msgid "Error: No packages found in {}"
 msgstr "Kesalahan: Tidak ada paket ditemukan di {}"
 
-#: src/solus-mate-transition-tool.py:456
+#: src/solus-mate-transition-tool.py:466
 msgid "Removed {}"
 msgstr "Telah mengapus {}"
 
-#: src/solus-mate-transition-tool.py:477
+#: src/solus-mate-transition-tool.py:487
 msgid "Error: Couldn't resolve ourself with packagekit"
 msgstr "Kesalahan: Tidak bisa menemukan resolusi dengan packagekit"
