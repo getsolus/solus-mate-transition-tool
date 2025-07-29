@@ -6,15 +6,16 @@
 # Translators:
 # David Harder, 2024
 # rk, 2024
+# Thomas Staudinger <staudi.kaos@gmail.com>, 2024
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: solus-mate-transition-tool 0.3.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-25 18:48-0500\n"
+"POT-Creation-Date: 2024-04-30 16:22-0500\n"
 "PO-Revision-Date: 2024-03-22 23:52+0000\n"
-"Last-Translator: rk, 2024\n"
+"Last-Translator: Thomas Staudinger <staudi.kaos@gmail.com>, 2024\n"
 "Language-Team: German (https://app.transifex.com/solus/teams/188714/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +23,9 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:123
+#: src/solus-mate-transition.ui.h:1 src/solus-mate-transition-tool.py:131
 msgid "Reboot"
-msgstr "Reboot"
+msgstr "Neustart"
 
 #: src/solus-mate-transition.ui.h:2
 msgid "{DE} Successfully installed, please reboot to continue."
@@ -35,13 +36,19 @@ msgid "Solus MATE Transition Tool"
 msgstr "Solus MATE-Übergangstool"
 
 #: src/solus-mate-transition.ui.h:4
-msgid "As of Solus 4.5 the MATE Desktop Enivornment is no longer being maintained. This tool will uninstall the MATE desktop environment and install Budgie or XFCE in its place."
-msgstr "Ab Solus 4.5 wird die MATE Desktop-Umgebung nicht länger gewartet. Dieses Tool deinstalliert die MATE Desktop-Umgebung und installiert an deren Stelle Budgie oder XFCE."
+msgid ""
+"As of Solus 4.5 the MATE Desktop Enivornment is no longer\n"
+"being maintained. This tool will uninstall the MATE desktop\n"
+"environment and install Budgie or XFCE in its place."
+msgstr ""
+"Ab Solus 4.5 wird die MATE Desktop-Umgebung nicht länger\n"
+"gewartet. Dieses Tool deinstalliert die MATE Desktop-\n"
+"Umgebung und installiert an deren Stelle Budgie oder XFCE."
 
 #: src/solus-mate-transition.ui.h:7
 msgid "Ensure any important work is backed up before continuing"
 msgstr ""
-"Stellen Sie sicher, dass alle wichtigen Arbeiten gesichert werden, bevor Sie"
+"Stellen Sie sicher, dass alle wichtigen Arbeiten gesichert wurden, bevor Sie"
 " fortfahren"
 
 #: src/solus-mate-transition.ui.h:8
@@ -82,11 +89,11 @@ msgstr "Schritt 2. Bereinigung"
 msgid " Progress"
 msgstr "Fortschritt"
 
-#: src/solus-mate-transition-notification.py:50
+#: src/solus-mate-transition-notification.py:55
 msgid "Solus Transition Service"
 msgstr "Solus-Übergangsservice"
 
-#: src/solus-mate-transition-notification.py:50
+#: src/solus-mate-transition-notification.py:55
 msgid ""
 "Solus MATE Edition is no longer supported. The MATE desktop environment will"
 " not be recieving new updates."
@@ -94,145 +101,146 @@ msgstr ""
 "Die Solus MATE Edition wird nicht länger unterstützt. Die MATE-"
 "Desktopumgebung wird keine neuen Updates mehr erhalten."
 
-#: src/solus-mate-transition-notification.py:52
+#: src/solus-mate-transition-notification.py:57
 msgid "Switch Solus Edition"
 msgstr "Solus-Edition wechseln"
 
-#: src/solus-mate-transition-tool.py:89
+#: src/solus-mate-transition-tool.py:96
 msgid "Uninstall MATE to complete transition"
 msgstr "MATE deinstallieren, um Übergang abzuschließen"
 
-#: src/solus-mate-transition-tool.py:103 src/solus-mate-transition-tool.py:112
+#: src/solus-mate-transition-tool.py:110 src/solus-mate-transition-tool.py:120
 msgid "Error"
 msgstr "Fehler"
 
-#: src/solus-mate-transition-tool.py:113
+#: src/solus-mate-transition-tool.py:111
+msgid "Logout and login to the MATE session first to continue"
+msgstr ""
+"Melden Sie sich ab, und in der MATE-Sitzung wieder an, um fortzufahren"
+
+#: src/solus-mate-transition-tool.py:121
 msgid ""
 "{} is installed but you are not logged into that desktop environment.\n"
 "Logout and login to the {} session to continue."
 msgstr ""
 "{} ist installiert, aber Sie sind nicht in dieser Desktop-Umgebung eingeloggt.\n"
-"Melden Sie sich ab und melden Sie sich bei der {}-Sitzung an, um fortzufahren."
+"Melden Sie sich ab und melden Sie sich in der {}-Sitzung an, um fortzufahren."
 
-#: src/solus-mate-transition-tool.py:121
+#: src/solus-mate-transition-tool.py:129
 msgid "Successfully Installed {}"
 msgstr "Erfolgreich installiert {} "
 
-#: src/solus-mate-transition-tool.py:128
+#: src/solus-mate-transition-tool.py:136
 msgid ""
 "Reboot now to login to your new desktop environment automatically. \n"
 "\n"
 "This program will then auto-start to prompt you to remove MATE."
 msgstr ""
-"Starten Sie jetzt neu, um sich automatisch bei Ihrer neuen Desktop-Umgebung anzumelden.\n"
+"Starten Sie jetzt neu, um sich automatisch in Ihrer neuen Desktop-Umgebung anzumelden.\n"
 "\n"
 "Dieses Programm wird dann automatisch gestartet und fordert Sie auf, MATE zu entfernen."
 
-#: src/solus-mate-transition-tool.py:149
+#: src/solus-mate-transition-tool.py:157
 msgid "Successfully Completed Transition to {}"
 msgstr "Erfolgreich abgeschlossener Übergang zu {}"
 
-#: src/solus-mate-transition-tool.py:152
+#: src/solus-mate-transition-tool.py:160
 msgid "We hope you enjoy using your new desktop environment."
 msgstr "Wir wünschen Ihnen viel Spaß mit Ihrer neuen Desktop-Umgebung."
 
-#: src/solus-mate-transition-tool.py:179
+#: src/solus-mate-transition-tool.py:187
 msgid "Finished"
 msgstr "Beendet"
 
-#: src/solus-mate-transition-tool.py:192
+#: src/solus-mate-transition-tool.py:200
 msgid "Failed to write temporary config file"
 msgstr "Temporäre Konfig-Datei konnte nicht geschrieben werden"
 
-#: src/solus-mate-transition-tool.py:206
+#: src/solus-mate-transition-tool.py:214
 msgid "Failed to remove temporary config file"
 msgstr "Temporäre Konfig-Datei konnte nicht entfernt werden"
 
-#: src/solus-mate-transition-tool.py:210
+#: src/solus-mate-transition-tool.py:218
 msgid "Downloading..."
 msgstr "Downloading ..."
 
-#: src/solus-mate-transition-tool.py:212
+#: src/solus-mate-transition-tool.py:220
 msgid "Installing..."
 msgstr "Installation ..."
 
-#: src/solus-mate-transition-tool.py:214
+#: src/solus-mate-transition-tool.py:222
 msgid "Removing..."
 msgstr "Entfernen ..."
 
-#: src/solus-mate-transition-tool.py:216
+#: src/solus-mate-transition-tool.py:224
 msgid "Cancelling..."
 msgstr "Abbruch ..."
 
-#: src/solus-mate-transition-tool.py:218
+#: src/solus-mate-transition-tool.py:226
 msgid "Loading cache..."
 msgstr "Cache wird geladen ..."
 
-#: src/solus-mate-transition-tool.py:226
+#: src/solus-mate-transition-tool.py:234
 msgid "Packagekit refreshed cache"
 msgstr "Packagekit aufgefrischter Cache"
 
-#: src/solus-mate-transition-tool.py:227
+#: src/solus-mate-transition-tool.py:235
 msgid "Cache updated"
 msgstr "Cache aktualisiert"
 
-#: src/solus-mate-transition-tool.py:231
-msgid "Packagekit update finished"
-msgstr "Packagekit-Aktualisierung beendet"
-
-#: src/solus-mate-transition-tool.py:235
+#: src/solus-mate-transition-tool.py:245
 msgid "Error: {}"
 msgstr "Fehler: {}"
 
-#: src/solus-mate-transition-tool.py:236
+#: src/solus-mate-transition-tool.py:246
 msgid "Packagekit update error:"
 msgstr "Packagekit-Aktualisierungsfehler:"
 
-#: src/solus-mate-transition-tool.py:263
+#: src/solus-mate-transition-tool.py:273
 msgid "Packagekit resolve"
 msgstr "Packagekit auflösen"
 
-#: src/solus-mate-transition-tool.py:277
+#: src/solus-mate-transition-tool.py:287
 msgid "is installed"
 msgstr "ist installiert"
 
-#: src/solus-mate-transition-tool.py:280 src/solus-mate-transition-tool.py:282
-#: src/solus-mate-transition-tool.py:284
+#: src/solus-mate-transition-tool.py:290 src/solus-mate-transition-tool.py:292
+#: src/solus-mate-transition-tool.py:294
 msgid "Skipping {}"
 msgstr "Überspringen von {}"
 
-#: src/solus-mate-transition-tool.py:308
+#: src/solus-mate-transition-tool.py:318
 msgid "Packagekit update"
 msgstr "Packagekit aktualisieren"
 
-#: src/solus-mate-transition-tool.py:320
+#: src/solus-mate-transition-tool.py:330
 msgid "Packagekit install"
 msgstr "Packagekit installieren"
 
-#: src/solus-mate-transition-tool.py:336
+#: src/solus-mate-transition-tool.py:346
 msgid "Packagekit remove"
 msgstr "Packagekit entfernen"
 
-#: src/solus-mate-transition-tool.py:353
+#: src/solus-mate-transition-tool.py:363
 msgid "Packagekit cancel"
 msgstr "Packagekit abbrechen"
 
-#: src/solus-mate-transition-tool.py:361
+#: src/solus-mate-transition-tool.py:371
 msgid "Warning: XDG_SESSION_DESKTOP is unset!"
 msgstr "Warnung: XDG_SESSION_DESKTOP ist nicht gesetzt!"
 
-#: src/solus-mate-transition-tool.py:398
+#: src/solus-mate-transition-tool.py:408
 msgid "Error Failed to read {}, error:"
 msgstr "Fehler: {} konnte nicht gelesen werden, Fehler:"
 
-#: src/solus-mate-transition-tool.py:402
+#: src/solus-mate-transition-tool.py:412
 msgid "Error: No packages found in {}"
 msgstr "Fehler: Keine Pakete gefunden in {}"
 
-#: src/solus-mate-transition-tool.py:456
+#: src/solus-mate-transition-tool.py:466
 msgid "Removed {}"
 msgstr "Entfernt {}"
 
-#: src/solus-mate-transition-tool.py:477
+#: src/solus-mate-transition-tool.py:487
 msgid "Error: Couldn't resolve ourself with packagekit"
 msgstr "Fehler: Es konnte nicht selbst mit packagekit aufgelöst werden"
